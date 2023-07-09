@@ -3,7 +3,7 @@ using Package_System_CRUD.BusinessLogic.Models;
 
 namespace Package_System_CRUD.BusinessLogic.Repositories
 {
-    internal class ManufacturerRepository : IModelRepository<Manufacturer>
+    public class ManufacturerRepository : IModelRepository<Manufacturer>
     {
         private readonly AppDbContext _dbContext;
 

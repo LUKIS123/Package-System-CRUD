@@ -8,9 +8,9 @@ namespace Package_System_CRUD.BusinessLogic.Services
     {
         private readonly ProductRepository _productRepository;
 
-        public ProductService(AppDbContext dbContext)
+        public ProductService(ProductRepository productRepository)
         {
-            _productRepository = new ProductRepository(dbContext);
+            _productRepository = productRepository;
         }
 
         public List<Product> GetPageList(int pageNumber, int numberOfElements)

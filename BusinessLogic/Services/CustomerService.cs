@@ -1,5 +1,4 @@
-﻿using Package_System_CRUD.BusinessLogic.Data;
-using Package_System_CRUD.BusinessLogic.Models;
+﻿using Package_System_CRUD.BusinessLogic.Models;
 using Package_System_CRUD.BusinessLogic.Repositories;
 
 namespace Package_System_CRUD.BusinessLogic.Services
@@ -8,9 +7,9 @@ namespace Package_System_CRUD.BusinessLogic.Services
     {
         private readonly CustomerRepository _repository;
 
-        public CustomerService(AppDbContext dbContext)
+        public CustomerService(CustomerRepository customerRepository)
         {
-            _repository = new CustomerRepository(dbContext);
+            _repository = customerRepository;
         }
 
         public List<Customer> GetPageList(int pageNumber, int numberOfElements)

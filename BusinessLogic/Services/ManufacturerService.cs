@@ -1,5 +1,4 @@
 ﻿using Package_System_CRUD.BusinessLogic.Repositories;
-using Package_System_CRUD.BusinessLogic.Data;
 using Package_System_CRUD.BusinessLogic.Models;
 
 namespace Package_System_CRUD.BusinessLogic.Services
@@ -8,9 +7,9 @@ namespace Package_System_CRUD.BusinessLogic.Services
     {
         private readonly ManufacturerRepository _repository;
 
-        public ManufacturerService(AppDbContext dbContext)
+        public ManufacturerService(ManufacturerRepository manufacturerRepository)
         {
-            _repository = new ManufacturerRepository(dbContext);
+            _repository = manufacturerRepository;
         }
 
         public List<Manufacturer> GetPageList(int pageNumber, int numberOfElements)

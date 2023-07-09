@@ -1,5 +1,4 @@
-﻿using Package_System_CRUD.BusinessLogic.Data;
-using Package_System_CRUD.BusinessLogic.Models;
+﻿using Package_System_CRUD.BusinessLogic.Models;
 using Package_System_CRUD.BusinessLogic.Repositories;
 
 namespace Package_System_CRUD.BusinessLogic.Services
@@ -8,9 +7,9 @@ namespace Package_System_CRUD.BusinessLogic.Services
     {
         private readonly OrderRepository _orderRepository;
 
-        public OrderService(AppDbContext dbContext)
+        public OrderService(OrderRepository orderRepository)
         {
-            _orderRepository = new OrderRepository(dbContext);
+            _orderRepository = orderRepository;
         }
 
         public List<Order> GetPageList(int pageNumber, int numberOfElements)

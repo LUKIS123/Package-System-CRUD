@@ -1,6 +1,4 @@
 ﻿using Package_System_CRUD.BusinessLogic.Data;
-using Package_System_CRUD.BusinessLogic.Repositories;
-using System.Diagnostics;
 using Package_System_CRUD.BusinessLogic.Models;
 using Package_System_CRUD.BusinessLogic.Services;
 
@@ -9,9 +7,6 @@ namespace Package_System_CRUD
     public class ApplicationFlow
     {
         private readonly AppDbContext _dbContext;
-        // private readonly CustomerRepository _customerRepository;
-        // private readonly ManufacturerRepository _manufacturerRepository;
-
         private readonly CustomerService _customerService;
         private readonly ManufacturerService _manufacturerService;
 
@@ -20,10 +15,6 @@ namespace Package_System_CRUD
         {
             _dbContext = dbContext;
             _dbContext.Database.EnsureCreated();
-
-            // _customerRepository = new CustomerRepository(_dbContext);
-            // _manufacturerRepository = new ManufacturerRepository(_dbContext);
-
             _customerService = customerService;
             _manufacturerService = manufacturerService;
         }

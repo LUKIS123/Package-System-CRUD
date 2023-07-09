@@ -3,7 +3,7 @@ using Package_System_CRUD.BusinessLogic.Models;
 
 namespace Package_System_CRUD.BusinessLogic.Repositories
 {
-    internal class CustomerRepository : IModelRepository<Customer>
+    public class CustomerRepository : IModelRepository<Customer>
     {
         private readonly AppDbContext _dbContext;
 
