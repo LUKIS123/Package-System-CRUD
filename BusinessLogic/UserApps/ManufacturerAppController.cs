@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Package_System_CRUD.BusinessLogic.UserApps
 {
-    public interface IUserAppFlow
+    internal class ManufacturerAppController
     {
     }
 }

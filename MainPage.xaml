@@ -43,6 +43,15 @@
                    WidthRequest="200"
                    HorizontalOptions="Center" />
 
+            <Label
+                x:Name="LoginInfoLbl"
+                Text="Logged in successfully!"
+                FontSize="12"
+                TextColor="LightGreen"
+                IsVisible="False"
+                SemanticProperties.Description="LoginInfo"
+                HorizontalOptions="Center" />
+
             <HorizontalStackLayout HorizontalOptions="Center" Spacing="25">
                 <Button
                     x:Name="LoginCustomerBtn"
@@ -67,6 +76,15 @@
                     HorizontalOptions="Center">
                 </Button>
             </HorizontalStackLayout>
+
+            <Label
+                x:Name="RegistrationInfoLbl"
+                Text="Registered successfully! Please Login!"
+                FontSize="12"
+                TextColor="LightGreen"
+                IsVisible="False"
+                SemanticProperties.Description="RegistrationInfo"
+                HorizontalOptions="Center" />
 
             <Button
                 x:Name="RegisterBtn"

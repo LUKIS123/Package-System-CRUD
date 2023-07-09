@@ -1,8 +1,9 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Package_System_CRUD.BusinessLogic;
 using Package_System_CRUD.BusinessLogic.Data;
+using Package_System_CRUD.BusinessLogic.Repositories;
+using Package_System_CRUD.BusinessLogic.Services;
 using Package_System_CRUD.BusinessLogic.UserApps;
 
 namespace Package_System_CRUD;
@@ -27,11 +28,22 @@ public static class MauiProgram
             )
         );
 
-        builder.Services.AddSingleton<ApplicationFlow>();
         builder.Services.AddSingleton<MainPage>();
-        builder.Services.AddSingleton<CustomerAppFlow>();
-        builder.Services.AddSingleton<EmployeeAppFlow>();
-        builder.Services.AddSingleton<ManufacturerAppFlow>();
+        builder.Services.AddSingleton<ApplicationFlow>();
+
+        builder.Services.AddSingleton<CustomerAppController>();
+        builder.Services.AddSingleton<EmployeeAppController>();
+        builder.Services.AddSingleton<ManufacturerAppController>();
+
+        builder.Services.AddSingleton<CustomerService>();
+        builder.Services.AddSingleton<ManufacturerService>();
+        builder.Services.AddSingleton<OrderService>();
+        builder.Services.AddSingleton<ProductService>();
+
+        builder.Services.AddSingleton<CustomerRepository>();
+        builder.Services.AddSingleton<ManufacturerRepository>();
+        builder.Services.AddSingleton<OrderRepository>();
+        builder.Services.AddSingleton<ProductRepository>();
 
 #if DEBUG
         builder.Logging.AddDebug();
