@@ -1,139 +1,37 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Package_System_CRUD.BusinessLogic.Models
 {
-    public class Order : INotifyPropertyChanged
+    public class Order
     {
-        private int _customerId;
-        private int _manufacturerId;
-        private int _productId;
-        private int _quantity;
-        private string? _customerName;
-        private OrderStatus _status;
-        private DateTime _submittedToEmployee;
-        private DateTime _submittedToManufacturer;
-        private DateTime _orderRealized;
-        private DateTime _sentToCustomer;
-        private DateTime _completed;
+        [Key]
+        public int Id { get; set; }
 
-        [Key] public int Id { get; set; }
-
-        [Required]
-        [ForeignKey("Customer")]
-        public int CustomerId
-        {
-            get => _customerId;
-            set
-            {
-                _customerId = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CustomerId)));
-            }
-        }
+        [Required] [ForeignKey("Customer")] 
+        public int CustomerId { get; set; }
 
         [Required]
         [ForeignKey("Manufacturer")]
-        public int ManufacturerId
-        {
-            get => _manufacturerId;
-            set
-            {
-                _manufacturerId = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ManufacturerId)));
-            }
-        }
+        public int ManufacturerId { get; set; }
 
-        public int ProductId
-        {
-            get => _productId;
-            set
-            {
-                _productId = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ProductId)));
-            }
-        }
+        [Required] [ForeignKey("Product")] 
+        public int ProductId { get; set; }
 
-        public int Quantity
-        {
-            get => _quantity;
-            set
-            {
-                _quantity = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Quantity)));
-            }
-        }
+        public int Quantity { get; set; }
 
-        public string? CustomerName
-        {
-            get => _customerName;
-            set
-            {
-                _customerName = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CustomerName)));
-            }
-        }
+        public string? CustomerName { get; set; }
 
-        public OrderStatus Status
-        {
-            get => _status;
-            set
-            {
-                _status = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Status)));
-            }
-        }
+        public OrderStatus Status { get; set; }
 
-        public DateTime SubmittedToEmployee
-        {
-            get => _submittedToEmployee;
-            set
-            {
-                _submittedToEmployee = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SubmittedToEmployee)));
-            }
-        }
+        public DateTime SubmittedToEmployee { get; set; }
 
-        public DateTime SubmittedToManufacturer
-        {
-            get => _submittedToManufacturer;
-            set
-            {
-                _submittedToManufacturer = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SubmittedToManufacturer)));
-            }
-        }
+        public DateTime SubmittedToManufacturer { get; set; }
 
-        public DateTime OrderRealized
-        {
-            get => _orderRealized;
-            set
-            {
-                _orderRealized = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(OrderRealized)));
-            }
-        }
+        public DateTime OrderRealized { get; set; }
 
-        public DateTime SentToCustomer
-        {
-            get => _sentToCustomer;
-            set
-            {
-                _sentToCustomer = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SentToCustomer)));
-            }
-        }
+        public DateTime SentToCustomer { get; set; }
 
-        public DateTime Completed
-        {
-            get => _completed;
-            set
-            {
-                _completed = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Completed)));
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
+        public DateTime Completed { get; set; }
     }
 }

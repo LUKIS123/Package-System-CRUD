@@ -1,14 +1,13 @@
-﻿using Package_System_CRUD.BusinessLogic.Data;
-using Package_System_CRUD.BusinessLogic.Models;
+﻿using Package_System_CRUD.BusinessLogic.Models;
 using Package_System_CRUD.BusinessLogic.Repositories;
 
 namespace Package_System_CRUD.BusinessLogic.Services
 {
     public class ProductService : IModelService<Product>
     {
-        private readonly ProductRepository _productRepository;
+        private readonly IModelRepository<Product> _productRepository;
 
-        public ProductService(ProductRepository productRepository)
+        public ProductService(IModelRepository<Product> productRepository)
         {
             _productRepository = productRepository;
         }
@@ -52,6 +51,11 @@ namespace Package_System_CRUD.BusinessLogic.Services
         public void UpdateEntity(Product entity)
         {
             _productRepository.UpdateEntity(entity);
+        }
+
+        public int GetCount()
+        {
+            return _productRepository.GetCount();
         }
     }
 }

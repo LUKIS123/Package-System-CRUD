@@ -5,9 +5,9 @@ namespace Package_System_CRUD.BusinessLogic.Services
 {
     public class ManufacturerService : IModelService<Manufacturer>
     {
-        private readonly ManufacturerRepository _repository;
+        private readonly IModelRepository<Manufacturer> _repository;
 
-        public ManufacturerService(ManufacturerRepository manufacturerRepository)
+        public ManufacturerService(IModelRepository<Manufacturer> manufacturerRepository)
         {
             _repository = manufacturerRepository;
         }
@@ -51,6 +51,11 @@ namespace Package_System_CRUD.BusinessLogic.Services
         public void UpdateEntity(Manufacturer entity)
         {
             _repository.UpdateEntity(entity);
+        }
+
+        public int GetCount()
+        {
+            return _repository.GetCount();
         }
     }
 }

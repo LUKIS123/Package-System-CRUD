@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui.Views;
+using Package_System_CRUD.BusinessLogic;
 using Package_System_CRUD.UserPages;
 using Package_System_CRUD.UserPages.PopUps;
 
@@ -6,10 +7,10 @@ namespace Package_System_CRUD;
 
 public partial class MainPage : ContentPage
 {
-    private readonly ApplicationFlow _app;
+    private readonly UserAuthenticationService _app;
     public string Username { get; private set; } = string.Empty;
 
-    public MainPage(ApplicationFlow app)
+    public MainPage(UserAuthenticationService app)
     {
         InitializeComponent();
         _app = app;
@@ -17,12 +18,16 @@ public partial class MainPage : ContentPage
 
     private async void OnCustomerLoginClicked(object sender, EventArgs e)
     {
-        Username = UsernameEntry.Text;
-        var loginSuccessful = _app.CheckIfCustomerUsernameValid(Username);
+        if (UsernameEntry.Text != null) Username = UsernameEntry.Text;
 
+        var loginSuccessful = _app.CheckIfCustomerUsernameValid(Username);
         if (loginSuccessful)
         {
-            await AppShell.Current.GoToAsync(nameof(CustomerPage));
+            LoginInfoLbl.Text = "Logged in successfully!";
+            LoginInfoLbl.TextColor = Colors.LightGreen;
+
+            _app.LoggedUser = Username;
+            await Shell.Current.GoToAsync($"{nameof(CustomerPage)}?username={Username}");
         }
         else
         {
@@ -30,24 +35,20 @@ public partial class MainPage : ContentPage
             LoginInfoLbl.TextColor = Colors.Red;
         }
 
-        // count++;
-        // if (count == 1)
-        //     LoginCustomerBtn.Text = $"Clicked {count} time";
-        // else
-        //     LoginCustomerBtn.Text = $"Clicked {count} times";
-        //
-        // SemanticScreenReader.Announce(LoginCustomerBtn.Text);
-
         LoginInfoLbl.IsVisible = true;
     }
 
     private async void OnManufacturerLoginClicked(object sender, EventArgs e)
     {
-        Username = UsernameEntry.Text;
+        if (UsernameEntry.Text != null) Username = UsernameEntry.Text;
         var loginSuccessful = _app.CheckIfManufacturerUsernameValid(Username);
         if (loginSuccessful)
         {
-            await AppShell.Current.GoToAsync(nameof(ManufacturerPage));
+            LoginInfoLbl.Text = "Logged in successfully!";
+            LoginInfoLbl.TextColor = Colors.LightGreen;
+
+            _app.LoggedUser = Username;
+            await Shell.Current.GoToAsync($"{nameof(ManufacturerPage)}?username={Username}");
         }
         else
         {
@@ -60,7 +61,7 @@ public partial class MainPage : ContentPage
 
     private async void OnEmployeeLoginClicked(object sender, EventArgs e)
     {
-        await AppShell.Current.GoToAsync(nameof(EmployeePage));
+        await Shell.Current.GoToAsync(nameof(EmployeePage));
     }
 
     private async void OnRegisterDialogPopup(object sender, EventArgs e)
@@ -72,6 +73,9 @@ public partial class MainPage : ContentPage
         if (result is not (bool and true)) return;
         if (popup.Username != null && popup.UserTypeCustomer.HasValue)
         {
+            RegistrationInfoLbl.Text = "Registered successfully! Please Login!";
+            RegistrationInfoLbl.TextColor = Colors.LightGreen;
+
             registrationSuccessful = _app.RegisterNewUser(popup.Username, popup.UserTypeCustomer.Value);
         }
 

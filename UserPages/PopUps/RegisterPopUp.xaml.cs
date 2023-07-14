@@ -16,7 +16,7 @@ public partial class RegisterPopUp : Popup
 
     private void OnRegisterButtonClicked(object sender, EventArgs e)
     {
-        Username = UsernameEntry.Text;
+        if (UsernameEntry.Text != null) Username = UsernameEntry.Text;
         UserTypeCustomer = IsCustomerChecked;
         Close(true);
     }

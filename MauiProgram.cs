@@ -1,10 +1,14 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Package_System_CRUD.BusinessLogic;
+using Package_System_CRUD.BusinessLogic.Config;
 using Package_System_CRUD.BusinessLogic.Data;
+using Package_System_CRUD.BusinessLogic.Models;
 using Package_System_CRUD.BusinessLogic.Repositories;
 using Package_System_CRUD.BusinessLogic.Services;
-using Package_System_CRUD.BusinessLogic.UserApps;
+using Package_System_CRUD.UserPages;
 
 namespace Package_System_CRUD;
 
@@ -28,22 +32,28 @@ public static class MauiProgram
             )
         );
 
+        builder.Configuration.AddConfiguration(
+            new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json")
+                .Build()
+        );
+        builder.Services.AddSingleton<ConfigurationProperties>();
+
+        builder.Services.AddSingleton<UserAuthenticationService>();
+        builder.Services.AddSingleton<IModelService<Customer>, CustomerService>();
+        builder.Services.AddSingleton<IModelService<Manufacturer>, ManufacturerService>();
+        builder.Services.AddSingleton<IModelService<Order>, OrderService>();
+        builder.Services.AddSingleton<IModelService<Product>, ProductService>();
+
+        builder.Services.AddSingleton<IModelRepository<Customer>, CustomerRepository>();
+        builder.Services.AddSingleton<IModelRepository<Manufacturer>, ManufacturerRepository>();
+        builder.Services.AddSingleton<IModelRepository<Order>, OrderRepository>();
+        builder.Services.AddSingleton<IModelRepository<Product>, ProductRepository>();
+
         builder.Services.AddSingleton<MainPage>();
-        builder.Services.AddSingleton<ApplicationFlow>();
-
-        builder.Services.AddSingleton<CustomerAppController>();
-        builder.Services.AddSingleton<EmployeeAppController>();
-        builder.Services.AddSingleton<ManufacturerAppController>();
-
-        builder.Services.AddSingleton<CustomerService>();
-        builder.Services.AddSingleton<ManufacturerService>();
-        builder.Services.AddSingleton<OrderService>();
-        builder.Services.AddSingleton<ProductService>();
-
-        builder.Services.AddSingleton<CustomerRepository>();
-        builder.Services.AddSingleton<ManufacturerRepository>();
-        builder.Services.AddSingleton<OrderRepository>();
-        builder.Services.AddSingleton<ProductRepository>();
+        builder.Services.AddSingleton<CustomerPage>();
+        builder.Services.AddSingleton<ManufacturerPage>();
+        builder.Services.AddSingleton<EmployeePage>();
 
 #if DEBUG
         builder.Logging.AddDebug();

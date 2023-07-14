@@ -5,9 +5,9 @@ namespace Package_System_CRUD.BusinessLogic.Services
 {
     public class CustomerService : IModelService<Customer>
     {
-        private readonly CustomerRepository _repository;
+        private readonly IModelRepository<Customer> _repository;
 
-        public CustomerService(CustomerRepository customerRepository)
+        public CustomerService(IModelRepository<Customer> customerRepository)
         {
             _repository = customerRepository;
         }
@@ -51,6 +51,11 @@ namespace Package_System_CRUD.BusinessLogic.Services
         public void UpdateEntity(Customer entity)
         {
             _repository.UpdateEntity(entity);
+        }
+
+        public int GetCount()
+        {
+            return _repository.GetCount();
         }
     }
 }

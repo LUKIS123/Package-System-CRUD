@@ -5,9 +5,9 @@ namespace Package_System_CRUD.BusinessLogic.Services
 {
     public class OrderService : IModelService<Order>
     {
-        private readonly OrderRepository _orderRepository;
+        private readonly IModelRepository<Order> _orderRepository;
 
-        public OrderService(OrderRepository orderRepository)
+        public OrderService(IModelRepository<Order> orderRepository)
         {
             _orderRepository = orderRepository;
         }
@@ -51,6 +51,11 @@ namespace Package_System_CRUD.BusinessLogic.Services
         public void UpdateEntity(Order entity)
         {
             _orderRepository.UpdateEntity(entity);
+        }
+
+        public int GetCount()
+        {
+            return _orderRepository.GetCount();
         }
     }
 }
