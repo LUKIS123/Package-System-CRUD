@@ -3,7 +3,7 @@ using Package_System_CRUD.BusinessLogic.Repositories;
 
 namespace Package_System_CRUD.BusinessLogic.Services
 {
-    public class OrderService : IModelService<Order>
+    public class OrderService : IModelServiceExtended<Order>
     {
         private readonly IModelRepository<Order> _orderRepository;
 
@@ -24,18 +24,7 @@ namespace Package_System_CRUD.BusinessLogic.Services
 
         public Order? FindByName(string name)
         {
-            Order? toFind = null;
-            for (var i = 0; i < _orderRepository.GetCount(); i++)
-            {
-                var orders = _orderRepository.LoadPage(i, 100);
-                toFind = orders.FirstOrDefault(x => x.CustomerName == name);
-                if (toFind is not null)
-                {
-                    break;
-                }
-            }
-
-            return toFind;
+            return _orderRepository.FindByName(name);
         }
 
         public void AddToDatabase(Order model)
@@ -56,6 +45,42 @@ namespace Package_System_CRUD.BusinessLogic.Services
         public int GetCount()
         {
             return _orderRepository.GetCount();
+        }
+
+        public List<Order> GetFilteredByUserId(int id)
+        {
+            return _orderRepository
+                .GetFiltered(
+                    (order) => order.CustomerId == id
+                );
+        }
+
+        public List<Order> GetFilteredByStatus(OrderStatus orderStatus)
+        {
+            return _orderRepository
+                .GetFiltered(
+                    (order) => order.Status == orderStatus
+                );
+        }
+
+        public List<Order> GetFilteredByUserId(int id, int pageNumber, int numberOfElements)
+        {
+            return _orderRepository
+                .GetFiltered(
+                    (order) => order.CustomerId == id,
+                    pageNumber,
+                    numberOfElements
+                );
+        }
+
+        public List<Order> GetFilteredByStatus(OrderStatus orderStatus, int pageNumber, int numberOfElements)
+        {
+            return _orderRepository
+                .GetFiltered(
+                    (order) => order.Status == orderStatus,
+                    pageNumber,
+                    numberOfElements
+                );
         }
     }
 }

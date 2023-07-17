@@ -8,7 +8,8 @@ namespace Package_System_CRUD.BusinessLogic
     {
         private readonly IModelService<Customer> _customerService;
         private readonly IModelService<Manufacturer> _manufacturerService;
-        public string? LoggedUser { get; set; }
+        public string LoggedUser { get; private set; } = string.Empty;
+        public int LoggedUserId { get; private set; }
 
         public UserAuthenticationService(
             AppDbContext dbContext,
@@ -22,15 +23,23 @@ namespace Package_System_CRUD.BusinessLogic
             _manufacturerService = manufacturerService;
         }
 
-        public bool CheckIfCustomerUsernameValid(string username)
+        public bool AuthenticateCustomer(string username)
         {
-            return _customerService.FindByName(username) is not null;
+            var found = _customerService.FindByName(username);
+            if (found is null) return false;
+            LoggedUser = username;
+            LoggedUserId = found.Id;
+            return true;
         }
 
 
-        public bool CheckIfManufacturerUsernameValid(string username)
+        public bool AuthenticateManufacturer(string username)
         {
-            return _manufacturerService.FindByName(username) is not null;
+            var found = _manufacturerService.FindByName(username);
+            if (found is null) return false;
+            LoggedUser = username;
+            LoggedUserId = found.Id;
+            return true;
         }
 
         public bool RegisterNewUser(string username, bool isCustomerType)

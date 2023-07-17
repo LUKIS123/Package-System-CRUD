@@ -1,4 +1,6 @@
-﻿namespace Package_System_CRUD.BusinessLogic.Models
+﻿using System.Linq;
+
+namespace Package_System_CRUD.BusinessLogic.Models
 {
     public enum OrderStatus
     {

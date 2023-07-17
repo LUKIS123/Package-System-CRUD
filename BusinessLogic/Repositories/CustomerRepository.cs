@@ -28,6 +28,13 @@ namespace Package_System_CRUD.BusinessLogic.Repositories
                 .FirstOrDefault(x => x.Id == id);
         }
 
+        public Customer? FindByName(string name)
+        {
+            return _dbContext
+                .Customers
+                .FirstOrDefault(x => x.Username == name);
+        }
+
         public void SaveEntity(Customer entity)
         {
             _dbContext.Customers.Add(entity);
@@ -50,5 +57,48 @@ namespace Package_System_CRUD.BusinessLogic.Repositories
         {
             return _dbContext.Customers.Count();
         }
+
+        public List<Customer> GetFiltered(Func<Customer, bool> condition)
+        {
+            return _dbContext
+                .Customers
+                .Where(condition)
+                .ToList();
+        }
+
+        public List<Customer> GetFiltered(Func<Customer, int, bool> condition)
+        {
+            return _dbContext
+                .Customers
+                .Where(condition)
+                .ToList();
+        }
+
+        public List<Customer> GetFiltered(Func<Customer, bool> condition, int pageNumber, int numberOfElements)
+        {
+            return _dbContext
+                .Customers
+                .Where(condition)
+                .Skip(pageNumber * numberOfElements)
+                .Take(numberOfElements)
+                .ToList();
+        }
+
+        // public List<Customer> GetFiltered(Func<Customer, string, bool> condition)
+        // {
+        //     var t = new Func<Customer, string, bool>((Customer x, string name) => x.Username == name);
+        //
+        //     return _dbContext
+        //         .Customers
+        //         .Where(t)
+        //         .ToList();
+        // }
+
+        //
+        // public List<Customer> GetFilteredById(int foreignId)
+        // {
+        //     var customer = this.FindById(foreignId);
+        //     return customer is null ? new List<Customer>() : new List<Customer> { customer };
+        // }
     }
 }

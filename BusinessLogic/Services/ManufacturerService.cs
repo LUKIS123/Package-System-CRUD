@@ -24,18 +24,7 @@ namespace Package_System_CRUD.BusinessLogic.Services
 
         public Manufacturer? FindByName(string name)
         {
-            Manufacturer? toFind = null;
-            for (var i = 0; i < Math.Ceiling((double)_repository.GetCount() / 100); i++)
-            {
-                var manufacturers = _repository.LoadPage(i, 100);
-                toFind = manufacturers.FirstOrDefault(x => x.Name == name);
-                if (toFind is not null)
-                {
-                    break;
-                }
-            }
-
-            return toFind;
+            return _repository.FindByName(name);
         }
 
         public void AddToDatabase(Manufacturer model)

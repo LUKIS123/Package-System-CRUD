@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace Package_System_CRUD.BusinessLogic.Models
 {
@@ -6,6 +8,8 @@ namespace Package_System_CRUD.BusinessLogic.Models
     {
         [Key] public int Id { get; set; }
 
+        [Required]
+        [ForeignKey("Manufacturer")]
         public int ManufacturerId { get; set; }
 
         public string Name { get; set; }

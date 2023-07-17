@@ -18,7 +18,7 @@ namespace Package_System_CRUD.BusinessLogic.Interface
                 SubmittedToEmployee = order.SubmittedToEmployee,
                 SubmittedToManufacturer = order.SubmittedToManufacturer,
                 OrderRealized = order.OrderRealized,
-                SentToCustomer = order.OrderRealized,
+                SentToCustomer = order.SentToCustomer,
                 Completed = order.Completed
             });
         }

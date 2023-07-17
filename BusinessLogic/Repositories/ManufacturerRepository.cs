@@ -28,6 +28,13 @@ namespace Package_System_CRUD.BusinessLogic.Repositories
                 .FirstOrDefault(x => x.Id == id);
         }
 
+        public Manufacturer? FindByName(string name)
+        {
+            return _dbContext
+                .Manufacturers
+                .FirstOrDefault(x => x.Name == name);
+        }
+
         public void SaveEntity(Manufacturer entity)
         {
             _dbContext.Manufacturers.Add(entity);
@@ -49,6 +56,24 @@ namespace Package_System_CRUD.BusinessLogic.Repositories
         public int GetCount()
         {
             return _dbContext.Manufacturers.Count();
+        }
+
+        public List<Manufacturer> GetFiltered(Func<Manufacturer, bool> condition)
+        {
+            return _dbContext
+                .Manufacturers
+                .Where(condition)
+                .ToList();
+        }
+
+        public List<Manufacturer> GetFiltered(Func<Manufacturer, bool> condition, int pageNumber, int numberOfElements)
+        {
+            return _dbContext
+                .Manufacturers
+                .Where(condition)
+                .Skip(pageNumber * numberOfElements)
+                .Take(numberOfElements)
+                .ToList();
         }
     }
 }

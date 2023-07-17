@@ -9,19 +9,22 @@ namespace Package_System_CRUD.UserPages;
 [QueryProperty("Username", "username")]
 public partial class CustomerPage : ContentPage
 {
+    private readonly IModelServiceExtended<Order> _orderService;
     private readonly IModelService<Customer> _customerService;
     private readonly IModelService<Product> _productService;
-    private readonly IModelService<Order> _orderService;
     private readonly IModelService<Manufacturer> _manufacturerService;
     private readonly ConfigurationProperties _properties;
     private readonly OrderCollectionViewModelRepository _orderCollectionViewModelRepository;
-    public string? Username { get; set; }
+    public string Username { get; init; }
+    public int UserId { get; init; }
     private int _pageNumber = 0;
+    private int _itemCountOnPage = 0;
+
 
     public CustomerPage(
+        IModelServiceExtended<Order> orderService,
         IModelService<Customer> customerService,
         IModelService<Product> productService,
-        IModelService<Order> orderService,
         IModelService<Manufacturer> manufacturerService,
         ConfigurationProperties properties,
         UserAuthenticationService userAuthenticationService
@@ -34,22 +37,11 @@ public partial class CustomerPage : ContentPage
         _properties = properties;
         _manufacturerService = manufacturerService;
         _orderCollectionViewModelRepository = new OrderCollectionViewModelRepository();
+
         Username = userAuthenticationService.LoggedUser;
+        UserId = userAuthenticationService.LoggedUserId;
 
-        WelcomeLbl.Text = $"Welcome {Username}!";
-        InitCustomerPage();
-    }
-
-    private void InitCustomerPage()
-    {
-        // var orderPageList = _orderService.GetPageList(_pageNumber, _properties.CustomerPageItemCount);
-        // foreach (var order in orderPageList)
-        // {
-        //     TableSection.Insert(0, new ViewCell()
-        //     {
-        //         View = UserPageUtils.RenderOrderCellViews(order)
-        //     });
-        // }
+        WelcomeLbl.Text = $"Welcome {Username}! : ID={UserId}";
     }
 
     protected override void OnAppearing()
@@ -60,13 +52,21 @@ public partial class CustomerPage : ContentPage
 
     private void OnPreviousBtnClicked(object? sender, EventArgs e)
     {
-        if (_pageNumber > 0) _pageNumber--;
+        if (_pageNumber <= 0) return;
+        _pageNumber--;
+        _orderCollectionViewModelRepository.OrderCollection.Clear();
+        collectionView.ItemsSource = null;
+        RenderCollectionViewItems();
         PageNumLbl.Text = $"Page {_pageNumber}";
     }
 
     private void OnNextPageBtnClicked(object? sender, EventArgs e)
     {
-        if (_orderService.GetCount() > _properties.CustomerPageItemCount) _pageNumber++;
+        if (_itemCountOnPage < _properties.CustomerPageItemCount) return;
+        _pageNumber++;
+        _orderCollectionViewModelRepository.OrderCollection.Clear();
+        collectionView.ItemsSource = null;
+        RenderCollectionViewItems();
         PageNumLbl.Text = $"Page {_pageNumber}";
     }
 
@@ -82,22 +82,28 @@ public partial class CustomerPage : ContentPage
         // await Shell.Current.GoToAsync(nameof(ManageToDoPage), navigationParameter);
     }
 
-    private void OnRefreshButtonClicked(object? sender, EventArgs e)
-    {
-        RenderCollectionViewItems();
-    }
-
     private void RenderCollectionViewItems()
     {
-        foreach (var order in _orderService.GetPageList(_pageNumber, _properties.CustomerPageItemCount))
+        _itemCountOnPage = 0;
+        var ordersById = _orderService.GetFilteredByUserId(UserId, _pageNumber, _properties.CustomerPageItemCount);
+
+        foreach (var order in ordersById)
         {
             _orderCollectionViewModelRepository.Add(
                 order,
                 _manufacturerService.FindById(order.ManufacturerId)?.Name,
                 _productService.FindById(order.ProductId)?.Name
             );
+            _itemCountOnPage++;
         }
 
         collectionView.ItemsSource = _orderCollectionViewModelRepository.OrderCollection;
+    }
+
+    private void OnRefreshButtonClicked(object? sender, EventArgs e)
+    {
+        _orderCollectionViewModelRepository.OrderCollection.Clear();
+        collectionView.ItemsSource = null;
+        RenderCollectionViewItems();
     }
 }

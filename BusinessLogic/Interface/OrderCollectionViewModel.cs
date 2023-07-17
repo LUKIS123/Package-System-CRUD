@@ -10,11 +10,11 @@ namespace Package_System_CRUD.BusinessLogic.Interface
         private string? _productName;
         private int _quantity;
         private OrderStatus _status;
-        private DateTime _submittedToEmployee;
-        private DateTime _submittedToManufacturer;
-        private DateTime _orderRealized;
-        private DateTime _sentToCustomer;
-        private DateTime _completed;
+        private DateTime? _submittedToEmployee;
+        private DateTime? _submittedToManufacturer;
+        private DateTime? _orderRealized;
+        private DateTime? _sentToCustomer;
+        private DateTime? _completed;
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public string? CustomerName
@@ -67,7 +67,7 @@ namespace Package_System_CRUD.BusinessLogic.Interface
             }
         }
 
-        public DateTime SubmittedToEmployee
+        public DateTime? SubmittedToEmployee
         {
             get => _submittedToEmployee;
             set
@@ -77,7 +77,7 @@ namespace Package_System_CRUD.BusinessLogic.Interface
             }
         }
 
-        public DateTime SubmittedToManufacturer
+        public DateTime? SubmittedToManufacturer
         {
             get => _submittedToManufacturer;
             set
@@ -87,7 +87,7 @@ namespace Package_System_CRUD.BusinessLogic.Interface
             }
         }
 
-        public DateTime OrderRealized
+        public DateTime? OrderRealized
         {
             get => _orderRealized;
             set
@@ -97,7 +97,7 @@ namespace Package_System_CRUD.BusinessLogic.Interface
             }
         }
 
-        public DateTime SentToCustomer
+        public DateTime? SentToCustomer
         {
             get => _sentToCustomer;
             set
@@ -107,7 +107,7 @@ namespace Package_System_CRUD.BusinessLogic.Interface
             }
         }
 
-        public DateTime Completed
+        public DateTime? Completed
         {
             get => _completed;
             set
@@ -117,6 +117,10 @@ namespace Package_System_CRUD.BusinessLogic.Interface
             }
         }
 
-        public string Overview => $"Product: {ProductName}\nQuantity: {Quantity}, Manufacturer: {ManufacturerName}";
+        public string Overview =>
+            $"Product: {ProductName}\n" +
+            $"Quantity: {Quantity}," +
+            $" Manufacturer: {ManufacturerName}\n" +
+            $"Status: {Status.ToString()}";
     }
 }

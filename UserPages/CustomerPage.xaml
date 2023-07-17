@@ -56,19 +56,6 @@
             HorizontalOptions="Center">
         </Label>
 
-        <!-- <TableView -->
-        <!--     x:Name="TableView" -->
-        <!--     HorizontalOptions="Center" -->
-        <!--     VerticalOptions="Center"> -->
-        <!-- -->
-        <!--     <TableRoot x:Name="OrderTableRoot" -->
-        <!--                Title="Your Orders:"> -->
-        <!--         <TableSection Title="" -->
-        <!--                       x:Name="TableSection"> -->
-        <!--         </TableSection> -->
-        <!--     </TableRoot> -->
-        <!-- </TableView> -->
-
         <CollectionView x:Name="collectionView"
                         SelectionMode="Single"
                         SelectionChanged="OnSelectionChanged"
@@ -82,7 +69,7 @@
 
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Label Text="{Binding Overview}" FontSize="Small" />
+                    <Label Text="{Binding Overview}" FontSize="Micro" />
                 </DataTemplate>
             </CollectionView.ItemTemplate>
 

@@ -39,16 +39,16 @@ public static class MauiProgram
         );
         builder.Services.AddSingleton<ConfigurationProperties>();
 
+        builder.Services.AddSingleton<IModelRepository<Customer>, CustomerRepository>();
+        builder.Services.AddSingleton<IModelRepository<Manufacturer>, ManufacturerRepository>();
+        builder.Services.AddSingleton<IModelRepository<Product>, ProductRepository>();
+        builder.Services.AddSingleton<IModelRepository<Order>, OrderRepository>();
+
         builder.Services.AddSingleton<UserAuthenticationService>();
         builder.Services.AddSingleton<IModelService<Customer>, CustomerService>();
         builder.Services.AddSingleton<IModelService<Manufacturer>, ManufacturerService>();
-        builder.Services.AddSingleton<IModelService<Order>, OrderService>();
         builder.Services.AddSingleton<IModelService<Product>, ProductService>();
-
-        builder.Services.AddSingleton<IModelRepository<Customer>, CustomerRepository>();
-        builder.Services.AddSingleton<IModelRepository<Manufacturer>, ManufacturerRepository>();
-        builder.Services.AddSingleton<IModelRepository<Order>, OrderRepository>();
-        builder.Services.AddSingleton<IModelRepository<Product>, ProductRepository>();
+        builder.Services.AddSingleton<IModelServiceExtended<Order>, OrderService>();
 
         builder.Services.AddSingleton<MainPage>();
         builder.Services.AddSingleton<CustomerPage>();

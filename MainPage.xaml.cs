@@ -20,13 +20,12 @@ public partial class MainPage : ContentPage
     {
         if (UsernameEntry.Text != null) Username = UsernameEntry.Text;
 
-        var loginSuccessful = _app.CheckIfCustomerUsernameValid(Username);
+        var loginSuccessful = _app.AuthenticateCustomer(Username);
         if (loginSuccessful)
         {
             LoginInfoLbl.Text = "Logged in successfully!";
             LoginInfoLbl.TextColor = Colors.LightGreen;
 
-            _app.LoggedUser = Username;
             await Shell.Current.GoToAsync($"{nameof(CustomerPage)}?username={Username}");
         }
         else
@@ -41,13 +40,12 @@ public partial class MainPage : ContentPage
     private async void OnManufacturerLoginClicked(object sender, EventArgs e)
     {
         if (UsernameEntry.Text != null) Username = UsernameEntry.Text;
-        var loginSuccessful = _app.CheckIfManufacturerUsernameValid(Username);
+        var loginSuccessful = _app.AuthenticateManufacturer(Username);
         if (loginSuccessful)
         {
             LoginInfoLbl.Text = "Logged in successfully!";
             LoginInfoLbl.TextColor = Colors.LightGreen;
 
-            _app.LoggedUser = Username;
             await Shell.Current.GoToAsync($"{nameof(ManufacturerPage)}?username={Username}");
         }
         else
