@@ -26,7 +26,7 @@ public partial class MainPage : ContentPage
             LoginInfoLbl.Text = "Logged in successfully!";
             LoginInfoLbl.TextColor = Colors.LightGreen;
 
-            await Shell.Current.GoToAsync($"{nameof(CustomerPage)}?username={Username}");
+            await Shell.Current.GoToAsync(nameof(CustomerPage));
         }
         else
         {
@@ -46,7 +46,7 @@ public partial class MainPage : ContentPage
             LoginInfoLbl.Text = "Logged in successfully!";
             LoginInfoLbl.TextColor = Colors.LightGreen;
 
-            await Shell.Current.GoToAsync($"{nameof(ManufacturerPage)}?username={Username}");
+            await Shell.Current.GoToAsync(nameof(ManufacturerPage));
         }
         else
         {

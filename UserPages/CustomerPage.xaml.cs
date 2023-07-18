@@ -1,8 +1,10 @@
+using CommunityToolkit.Maui.Views;
 using Package_System_CRUD.BusinessLogic;
 using Package_System_CRUD.BusinessLogic.Config;
 using Package_System_CRUD.BusinessLogic.Interface;
 using Package_System_CRUD.BusinessLogic.Models;
 using Package_System_CRUD.BusinessLogic.Services;
+using Package_System_CRUD.UserPages.PopUps;
 
 namespace Package_System_CRUD.UserPages;
 
@@ -72,14 +74,18 @@ public partial class CustomerPage : ContentPage
 
     private async void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        // Debug.WriteLine("---> Item changed clicked!");
-        //
-        // var navigationParameter = new Dictionary<string, object>
-        // {
-        //     { nameof(Order), e.CurrentSelection.FirstOrDefault() as Order }
-        // };
-        //
-        // await Shell.Current.GoToAsync(nameof(ManageToDoPage), navigationParameter);
+        var selectedOrderViewModel = e.CurrentSelection.FirstOrDefault() as OrderCollectionViewModel;
+        if (selectedOrderViewModel == null) return;
+
+        var popup = new PickUpOrderPopUp(selectedOrderViewModel);
+        var result = await this.ShowPopupAsync(popup);
+        if (result is not (bool and true)) return;
+
+        var order = _orderService.FindById(selectedOrderViewModel.Id);
+        if (order is null) return;
+
+        order.Status = selectedOrderViewModel.Status;
+        _orderService.UpdateEntity(order);
     }
 
     private void RenderCollectionViewItems()

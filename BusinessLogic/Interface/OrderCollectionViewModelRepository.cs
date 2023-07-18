@@ -10,6 +10,7 @@ namespace Package_System_CRUD.BusinessLogic.Interface
         {
             OrderCollection.Add(new OrderCollectionViewModel
             {
+                Id = order.Id,
                 CustomerName = order.CustomerName,
                 ManufacturerName = manufacturer,
                 ProductName = product,

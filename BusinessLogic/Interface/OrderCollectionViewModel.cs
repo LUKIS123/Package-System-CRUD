@@ -5,6 +5,7 @@ namespace Package_System_CRUD.BusinessLogic.Interface
 {
     public class OrderCollectionViewModel : INotifyPropertyChanged
     {
+        private int _id;
         private string? _customerName;
         private string? _manufacturerName;
         private string? _productName;
@@ -16,6 +17,16 @@ namespace Package_System_CRUD.BusinessLogic.Interface
         private DateTime? _sentToCustomer;
         private DateTime? _completed;
         public event PropertyChangedEventHandler? PropertyChanged;
+
+        public int Id
+        {
+            get => _id;
+            set
+            {
+                _id = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Id)));
+            }
+        }
 
         public string? CustomerName
         {
