@@ -55,6 +55,14 @@ namespace Package_System_CRUD.BusinessLogic.Services
                 );
         }
 
+        public List<Order> GetFilteredByManufacturerId(int id)
+        {
+            return _orderRepository
+                .GetFiltered(
+                    (order) => order.ManufacturerId == id
+                );
+        }
+
         public List<Order> GetFilteredByStatus(OrderStatus orderStatus)
         {
             return _orderRepository
@@ -68,6 +76,16 @@ namespace Package_System_CRUD.BusinessLogic.Services
             return _orderRepository
                 .GetFiltered(
                     (order) => order.CustomerId == id,
+                    pageNumber,
+                    numberOfElements
+                );
+        }
+
+        public List<Order> GetFilteredByManufacturerId(int id, int pageNumber, int numberOfElements)
+        {
+            return _orderRepository
+                .GetFiltered(
+                    (order) => order.ManufacturerId == id,
                     pageNumber,
                     numberOfElements
                 );

@@ -12,7 +12,6 @@ namespace Package_System_CRUD.UserPages;
 public partial class CustomerPage : ContentPage
 {
     private readonly IModelServiceExtended<Order> _orderService;
-    private readonly IModelService<Customer> _customerService;
     private readonly IModelService<Product> _productService;
     private readonly IModelService<Manufacturer> _manufacturerService;
     private readonly ConfigurationProperties _properties;
@@ -22,10 +21,8 @@ public partial class CustomerPage : ContentPage
     private int _pageNumber = 0;
     private int _itemCountOnPage = 0;
 
-
     public CustomerPage(
         IModelServiceExtended<Order> orderService,
-        IModelService<Customer> customerService,
         IModelService<Product> productService,
         IModelService<Manufacturer> manufacturerService,
         ConfigurationProperties properties,
@@ -33,7 +30,6 @@ public partial class CustomerPage : ContentPage
     )
     {
         InitializeComponent();
-        _customerService = customerService;
         _productService = productService;
         _orderService = orderService;
         _properties = properties;
@@ -91,7 +87,12 @@ public partial class CustomerPage : ContentPage
     private void RenderCollectionViewItems()
     {
         _itemCountOnPage = 0;
-        var ordersById = _orderService.GetFilteredByUserId(UserId, _pageNumber, _properties.CustomerPageItemCount);
+        var ordersById = _orderService
+            .GetFilteredByUserId(
+                UserId,
+                _pageNumber,
+                _properties.CustomerPageItemCount
+            );
 
         foreach (var order in ordersById)
         {

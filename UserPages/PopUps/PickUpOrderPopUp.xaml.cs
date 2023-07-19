@@ -25,7 +25,7 @@ public partial class PickUpOrderPopUp : Popup
         InitializeComponent();
         OrderCollectionViewModel = orderCollectionViewModel;
 
-        OverviewLbl.Text = OrderCollectionViewModel?.Overview;
+        OverviewLbl.Text = OrderCollectionViewModel?.Details;
         InfoLbl.Text = OrderCollectionViewModel?.Status == OrderStatus.ReadyToPickUp
             ? "Order is ready to Pick Up!"
             : "Order is yet to be realized!";

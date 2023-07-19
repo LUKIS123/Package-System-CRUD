@@ -130,8 +130,20 @@ namespace Package_System_CRUD.BusinessLogic.Interface
 
         public string Overview =>
             $"Product: {ProductName}\n" +
+            $"Quantity: {Quantity}, " +
+            $"Manufacturer: {ManufacturerName}\n" +
+            $"Status: {Status.ToString()}";
+
+        public string Details =>
+            $"Product: {ProductName}\n" +
             $"Quantity: {Quantity}," +
             $" Manufacturer: {ManufacturerName}\n" +
-            $"Status: {Status.ToString()}";
+            $"Status: {Status.ToString()}\n\n" +
+            $"Order ID: {Id}\n" +
+            $"SubmittedToEmployee: {String.Format("{0:dd-MM-yyyy}", SubmittedToEmployee)}\n" +
+            $"SubmittedToManufacturer: {String.Format("{0:dd-MM-yyyy}", SubmittedToManufacturer)}\n" +
+            $"OrderRealized: {String.Format("{0:dd-MM-yyyy}", OrderRealized)}\n" +
+            $"SentToCustomer: {String.Format("{0:dd-MM-yyyy}", SentToCustomer)}\n" +
+            $"Completed: {String.Format("{0:dd-MM-yyyy}", Completed)}";
     }
 }
