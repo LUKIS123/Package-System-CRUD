@@ -36,6 +36,7 @@
                 HorizontalOptions="Center" />
 
             <Entry x:Name="UsernameEntry"
+                   Text="{Binding Path=Username}"
                    Placeholder="Enter your Username"
                    BackgroundColor="White"
                    TextColor="Black"

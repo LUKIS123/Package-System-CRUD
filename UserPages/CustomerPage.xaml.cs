@@ -8,7 +8,6 @@ using Package_System_CRUD.UserPages.PopUps;
 
 namespace Package_System_CRUD.UserPages;
 
-[QueryProperty("Username", "username")]
 public partial class CustomerPage : ContentPage
 {
     private readonly IModelServiceExtended<Order> _orderService;
@@ -16,8 +15,9 @@ public partial class CustomerPage : ContentPage
     private readonly IModelService<Manufacturer> _manufacturerService;
     private readonly ConfigurationProperties _properties;
     private readonly OrderCollectionViewModelRepository _orderCollectionViewModelRepository;
-    public string Username { get; init; }
-    public int UserId { get; init; }
+    private readonly UserAuthenticationService _userAuthenticationService;
+    public string Username { get; private set; } = string.Empty;
+    public int UserId { get; private set; }
     private int _pageNumber = 0;
     private int _itemCountOnPage = 0;
 
@@ -34,27 +34,26 @@ public partial class CustomerPage : ContentPage
         _orderService = orderService;
         _properties = properties;
         _manufacturerService = manufacturerService;
+        _userAuthenticationService = userAuthenticationService;
         _orderCollectionViewModelRepository = new OrderCollectionViewModelRepository();
-
-        Username = userAuthenticationService.LoggedUser;
-        UserId = userAuthenticationService.LoggedUserId;
-
-        WelcomeLbl.Text = $"Welcome {Username}! : ID={UserId}";
     }
 
     protected override void OnAppearing()
     {
         base.OnAppearing();
+        Username = _userAuthenticationService.LoggedUser;
+        UserId = _userAuthenticationService.LoggedUserId;
         RenderCollectionViewItems();
+
+        WelcomeLbl.Text = $"Welcome {Username}! : ID={UserId}";
     }
 
     private void OnPreviousBtnClicked(object? sender, EventArgs e)
     {
         if (_pageNumber <= 0) return;
         _pageNumber--;
-        _orderCollectionViewModelRepository.OrderCollection.Clear();
-        collectionView.ItemsSource = null;
         RenderCollectionViewItems();
+
         PageNumLbl.Text = $"Page {_pageNumber}";
     }
 
@@ -62,9 +61,8 @@ public partial class CustomerPage : ContentPage
     {
         if (_itemCountOnPage < _properties.CustomerPageItemCount) return;
         _pageNumber++;
-        _orderCollectionViewModelRepository.OrderCollection.Clear();
-        collectionView.ItemsSource = null;
         RenderCollectionViewItems();
+
         PageNumLbl.Text = $"Page {_pageNumber}";
     }
 
@@ -80,12 +78,16 @@ public partial class CustomerPage : ContentPage
         var order = _orderService.FindById(selectedOrderViewModel.Id);
         if (order is null) return;
 
-        order.Status = selectedOrderViewModel.Status;
+        order.Status = OrderStatus.PickedUp;
+        order.SubmittedToEmployee = DateTime.Today;
         _orderService.UpdateEntity(order);
     }
 
     private void RenderCollectionViewItems()
     {
+        collectionView.ItemsSource = null;
+        _orderCollectionViewModelRepository.OrderCollection.Clear();
+
         _itemCountOnPage = 0;
         var ordersById = _orderService
             .GetFilteredByUserId(
@@ -109,8 +111,6 @@ public partial class CustomerPage : ContentPage
 
     private void OnRefreshButtonClicked(object? sender, EventArgs e)
     {
-        _orderCollectionViewModelRepository.OrderCollection.Clear();
-        collectionView.ItemsSource = null;
         RenderCollectionViewItems();
     }
 }

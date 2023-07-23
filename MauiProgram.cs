@@ -9,6 +9,7 @@ using Package_System_CRUD.BusinessLogic.Models;
 using Package_System_CRUD.BusinessLogic.Repositories;
 using Package_System_CRUD.BusinessLogic.Services;
 using Package_System_CRUD.UserPages;
+using Package_System_CRUD.UserPages.Management;
 
 namespace Package_System_CRUD;
 
@@ -54,6 +55,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<CustomerPage>();
         builder.Services.AddSingleton<ManufacturerPage>();
         builder.Services.AddSingleton<EmployeePage>();
+        builder.Services.AddTransient<EmployeeOrderManagement>();
+        builder.Services.AddTransient<ManufacturerOrderManagement>();
 
 #if DEBUG
         builder.Logging.AddDebug();

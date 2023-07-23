@@ -32,7 +32,6 @@ namespace Package_System_CRUD.BusinessLogic
             return true;
         }
 
-
         public bool AuthenticateManufacturer(string username)
         {
             var found = _manufacturerService.FindByName(username);

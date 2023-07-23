@@ -5,10 +5,11 @@ using Package_System_CRUD.UserPages.PopUps;
 
 namespace Package_System_CRUD;
 
+[QueryProperty(nameof(Username), "Username")]
 public partial class MainPage : ContentPage
 {
     private readonly UserAuthenticationService _app;
-    public string Username { get; private set; } = string.Empty;
+    public string Username { get; set; } = string.Empty;
 
     public MainPage(UserAuthenticationService app)
     {
@@ -40,6 +41,7 @@ public partial class MainPage : ContentPage
     private async void OnManufacturerLoginClicked(object sender, EventArgs e)
     {
         if (UsernameEntry.Text != null) Username = UsernameEntry.Text;
+
         var loginSuccessful = _app.AuthenticateManufacturer(Username);
         if (loginSuccessful)
         {

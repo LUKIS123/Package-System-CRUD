@@ -3,6 +3,7 @@ using Package_System_CRUD.BusinessLogic.Config;
 using Package_System_CRUD.BusinessLogic.Interface;
 using Package_System_CRUD.BusinessLogic.Models;
 using Package_System_CRUD.BusinessLogic.Services;
+using Package_System_CRUD.UserPages.Management;
 
 namespace Package_System_CRUD.UserPages;
 
@@ -12,8 +13,9 @@ public partial class ManufacturerPage : ContentPage
     private readonly IModelService<Product> _productService;
     private readonly ConfigurationProperties _properties;
     private readonly OrderCollectionViewModelRepository _orderCollectionViewModelRepository;
-    public string Username { get; init; }
-    public int ManufacturerId { get; init; }
+    private readonly UserAuthenticationService _userAuthenticationService;
+    public string Username { get; private set; } = string.Empty;
+    public int ManufacturerId { get; private set; }
     private int _pageNumber = 0;
     private int _itemCountOnPage = 0;
 
@@ -28,18 +30,19 @@ public partial class ManufacturerPage : ContentPage
         _orderService = orderService;
         _productService = productService;
         _properties = properties;
+        _userAuthenticationService = userAuthenticationService;
         _orderCollectionViewModelRepository = new OrderCollectionViewModelRepository();
-
-        Username = userAuthenticationService.LoggedUser;
-        ManufacturerId = userAuthenticationService.LoggedUserId;
-
-        WelcomeLbl.Text = $"Welcome {Username}! : ID={ManufacturerId}";
     }
 
     protected override void OnAppearing()
     {
         base.OnAppearing();
+
+        Username = _userAuthenticationService.LoggedUser;
+        ManufacturerId = _userAuthenticationService.LoggedUserId;
         RenderCollectionViewItems();
+
+        WelcomeLbl.Text = $"Welcome {Username}! : ID={ManufacturerId}";
     }
 
 
@@ -47,9 +50,8 @@ public partial class ManufacturerPage : ContentPage
     {
         if (_pageNumber <= 0) return;
         _pageNumber--;
-        _orderCollectionViewModelRepository.OrderCollection.Clear();
-        collectionView.ItemsSource = null;
         RenderCollectionViewItems();
+
         PageNumLbl.Text = $"Page {_pageNumber}";
     }
 
@@ -57,18 +59,29 @@ public partial class ManufacturerPage : ContentPage
     {
         if (_itemCountOnPage < _properties.ManufacturerPageItemCount) return;
         _pageNumber++;
-        _orderCollectionViewModelRepository.OrderCollection.Clear();
-        collectionView.ItemsSource = null;
         RenderCollectionViewItems();
+
         PageNumLbl.Text = $"Page {_pageNumber}";
     }
 
-    private void OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    private async void OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
+        var selectedOrderViewModel = e.CurrentSelection.FirstOrDefault() as OrderCollectionViewModel;
+        if (selectedOrderViewModel == null) return;
+
+        var navigationParameter = new Dictionary<string, object>
+        {
+            { nameof(OrderCollectionViewModel), selectedOrderViewModel }
+        };
+
+        await Shell.Current.GoToAsync(nameof(ManufacturerOrderManagement), navigationParameter);
     }
 
     private void RenderCollectionViewItems()
     {
+        collectionView.ItemsSource = null;
+        _orderCollectionViewModelRepository.OrderCollection.Clear();
+
         _itemCountOnPage = 0;
         var ordersById = _orderService
             .GetFilteredByManufacturerId(
@@ -92,8 +105,6 @@ public partial class ManufacturerPage : ContentPage
 
     private void OnRefreshButtonClicked(object? sender, EventArgs e)
     {
-        _orderCollectionViewModelRepository.OrderCollection.Clear();
-        collectionView.ItemsSource = null;
         RenderCollectionViewItems();
     }
 }

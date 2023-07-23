@@ -70,6 +70,12 @@
 	  <MauiXaml Update="UserPages\EmployeePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="UserPages\Management\EmployeeOrderManagement.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="UserPages\Management\ManufacturerOrderManagement.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="UserPages\ManufacturerPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
