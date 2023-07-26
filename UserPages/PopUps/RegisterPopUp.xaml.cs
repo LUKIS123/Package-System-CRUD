@@ -1,48 +1,40 @@
 using CommunityToolkit.Maui.Views;
+using Package_System_CRUD.BusinessLogic;
 
 namespace Package_System_CRUD.UserPages.PopUps;
 
 public partial class RegisterPopUp : Popup
 {
     public string? Username { get; private set; }
-    public bool? UserTypeCustomer { get; private set; }
-    public bool IsCustomerChecked { get; set; }
+    public UserType User { get; private set; }
+
+    private readonly List<UserType> _userTypes = new() { UserType.Customer, UserType.Manufacturer, UserType.Employee };
 
     public RegisterPopUp()
     {
         InitializeComponent();
-        CustomerCheckBox.IsChecked = true;
+
+        UserTypePicker.ItemsSource = _userTypes;
+        UserTypePicker.SelectedItem = _userTypes[0];
+
+        User = UserType.Customer;
     }
 
     private void OnRegisterButtonClicked(object sender, EventArgs e)
     {
-        if (UsernameEntry.Text != null) Username = UsernameEntry.Text;
-        UserTypeCustomer = IsCustomerChecked;
+        if (UsernameEntry.Text == null) return;
+        Username = UsernameEntry.Text;
         Close(true);
     }
 
-    private void OnManufacturerCheckBoxSelect(object? sender, CheckedChangedEventArgs e)
+    private void OnSelectedIndexChanged(object? sender, EventArgs e)
     {
-        if (!IsCustomerChecked)
+        var type = UserTypePicker.SelectedItem;
+
+        if (type is UserType userType)
         {
-            return;
+            User = userType;
         }
-
-        CustomerCheckBox.IsChecked = false;
-        ManufacturerCheckBox.IsChecked = true;
-        IsCustomerChecked = false;
-    }
-
-    private void OnCustomerCheckBoxSelect(object? sender, CheckedChangedEventArgs e)
-    {
-        if (IsCustomerChecked)
-        {
-            return;
-        }
-
-        ManufacturerCheckBox.IsChecked = false;
-        CustomerCheckBox.IsChecked = true;
-        IsCustomerChecked = true;
     }
 
     private void OnCancelButtonClicked(object? sender, EventArgs e) => Close(false);

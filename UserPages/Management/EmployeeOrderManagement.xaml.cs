@@ -46,25 +46,27 @@ public partial class EmployeeOrderManagement : ContentPage
 
     private async void OnForwardToManufacturerButtonClicked(object? sender, EventArgs e)
     {
+        if (OrderCollectionViewModel.Status != OrderStatus.Pending) return;
+
         var order = _orderService.FindById(OrderCollectionViewModel.Id);
-        if (order.Status == OrderStatus.Pending)
-        {
-            order.Status = OrderStatus.Received;
-            order.SubmittedToManufacturer = DateTime.Today;
-            _orderService.UpdateEntity(order);
-            await Shell.Current.GoToAsync("..");
-        }
+        if (order == null) return;
+
+        order.Status = OrderStatus.Received;
+        order.SubmittedToManufacturer = DateTime.Now;
+        _orderService.UpdateEntity(order);
+        await Shell.Current.GoToAsync("..");
     }
 
     private async void OnSendToCustomerButtonClicked(object? sender, EventArgs e)
     {
+        if (OrderCollectionViewModel.Status != OrderStatus.Sent) return;
+
         var order = _orderService.FindById(OrderCollectionViewModel.Id);
-        if (order.Status == OrderStatus.Sent)
-        {
-            order.Status = OrderStatus.ReadyToPickUp;
-            order.SentToCustomer = DateTime.Today;
-            _orderService.UpdateEntity(order);
-            await Shell.Current.GoToAsync("..");
-        }
+        if (order == null) return;
+
+        order.Status = OrderStatus.ReadyToPickUp;
+        order.SentToCustomer = DateTime.Now;
+        _orderService.UpdateEntity(order);
+        await Shell.Current.GoToAsync("..");
     }
 }

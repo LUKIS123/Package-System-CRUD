@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Package_System_CRUD.BusinessLogic.Models;
-using System.Linq;
 
 namespace Package_System_CRUD.BusinessLogic.Data
 {
@@ -14,6 +13,7 @@ namespace Package_System_CRUD.BusinessLogic.Data
         public DbSet<Product> Products => Set<Product>();
         public DbSet<Customer> Customers => Set<Customer>();
         public DbSet<Order> Orders => Set<Order>();
+        public DbSet<Employee> Employees => Set<Employee>();
 
         // protected override void OnModelCreating(ModelBuilder modelBuilder)
         // {

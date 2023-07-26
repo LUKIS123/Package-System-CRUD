@@ -10,6 +10,7 @@ using Package_System_CRUD.BusinessLogic.Repositories;
 using Package_System_CRUD.BusinessLogic.Services;
 using Package_System_CRUD.UserPages;
 using Package_System_CRUD.UserPages.Management;
+using Package_System_CRUD.UserPages.Shop;
 
 namespace Package_System_CRUD;
 
@@ -42,12 +43,14 @@ public static class MauiProgram
 
         builder.Services.AddSingleton<IModelRepository<Customer>, CustomerRepository>();
         builder.Services.AddSingleton<IModelRepository<Manufacturer>, ManufacturerRepository>();
+        builder.Services.AddSingleton<IModelRepository<Employee>, EmployeeRepository>();
         builder.Services.AddSingleton<IModelRepository<Product>, ProductRepository>();
         builder.Services.AddSingleton<IModelRepository<Order>, OrderRepository>();
 
         builder.Services.AddSingleton<UserAuthenticationService>();
         builder.Services.AddSingleton<IModelService<Customer>, CustomerService>();
         builder.Services.AddSingleton<IModelService<Manufacturer>, ManufacturerService>();
+        builder.Services.AddSingleton<IModelService<Employee>, EmployeeService>();
         builder.Services.AddSingleton<IModelService<Product>, ProductService>();
         builder.Services.AddSingleton<IModelServiceExtended<Order>, OrderService>();
 
@@ -55,6 +58,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<CustomerPage>();
         builder.Services.AddSingleton<ManufacturerPage>();
         builder.Services.AddSingleton<EmployeePage>();
+        builder.Services.AddSingleton<ShopPage>();
+
         builder.Services.AddTransient<EmployeeOrderManagement>();
         builder.Services.AddTransient<ManufacturerOrderManagement>();
 

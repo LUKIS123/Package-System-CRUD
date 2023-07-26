@@ -79,7 +79,7 @@ public partial class CustomerPage : ContentPage
         if (order is null) return;
 
         order.Status = OrderStatus.PickedUp;
-        order.SubmittedToEmployee = DateTime.Today;
+        order.SubmittedToEmployee = DateTime.Now;
         _orderService.UpdateEntity(order);
     }
 

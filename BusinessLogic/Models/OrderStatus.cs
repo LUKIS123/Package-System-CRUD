@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace Package_System_CRUD.BusinessLogic.Models
+﻿namespace Package_System_CRUD.BusinessLogic.Models
 {
     public enum OrderStatus
     {

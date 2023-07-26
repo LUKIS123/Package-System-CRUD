@@ -28,23 +28,18 @@
 
         <HorizontalStackLayout HorizontalOptions="Center" Spacing="25">
 
-            <Label Text="Customer:"
+            <Label Text="Select User Type:"
                    TextColor="Black"
                    HorizontalOptions="Center"
                    VerticalOptions="Center" />
 
-            <CheckBox x:Name="CustomerCheckBox"
-                      CheckedChanged="OnCustomerCheckBoxSelect">
-            </CheckBox>
-
-            <Label Text="Manufacturer:"
-                   TextColor="Black"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center" />
-
-            <CheckBox x:Name="ManufacturerCheckBox"
-                      CheckedChanged="OnManufacturerCheckBoxSelect">
-            </CheckBox>
+            <Picker HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    BackgroundColor="DarkViolet"
+                    x:Name="UserTypePicker"
+                    SelectedIndexChanged="OnSelectedIndexChanged"
+                    WidthRequest="150">
+            </Picker>
 
         </HorizontalStackLayout>
 

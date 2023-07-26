@@ -5,11 +5,21 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Package_System_CRUD"
+    xmlns:shop="clr-namespace:Package_System_CRUD.UserPages.Shop"
     Shell.FlyoutBehavior="Disabled">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <!-- <ShellContent -->
+    <!--     Title="Home" -->
+    <!--     ContentTemplate="{DataTemplate local:MainPage}" -->
+    <!--     Route="MainPage" /> -->
+
+    <TabBar>
+        <Tab Title="User">
+            <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
+        </Tab>
+        <Tab Title="Shop">
+            <ShellContent ContentTemplate="{DataTemplate shop:ShopPage}" />
+        </Tab>
+    </TabBar>
 
 </Shell>

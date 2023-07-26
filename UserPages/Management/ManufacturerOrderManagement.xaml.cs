@@ -78,7 +78,7 @@ public partial class ManufacturerOrderManagement : ContentPage
         if (OrderCollectionViewModel.Status == OrderStatus.InRealization)
         {
             order.Status = OrderStatus.Sent;
-            order.OrderRealized = DateTime.Today;
+            order.OrderRealized = DateTime.Now;
             _orderService.UpdateEntity(order);
 
             StatusChangedBtn.Text = "No actions possible";

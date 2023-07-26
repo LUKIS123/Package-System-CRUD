@@ -8,20 +8,20 @@ namespace Package_System_CRUD;
 [QueryProperty(nameof(Username), "Username")]
 public partial class MainPage : ContentPage
 {
-    private readonly UserAuthenticationService _app;
+    private readonly UserAuthenticationService _userAuthenticationService;
     public string Username { get; set; } = string.Empty;
 
-    public MainPage(UserAuthenticationService app)
+    public MainPage(UserAuthenticationService userAuthenticationService)
     {
         InitializeComponent();
-        _app = app;
+        _userAuthenticationService = userAuthenticationService;
     }
 
     private async void OnCustomerLoginClicked(object sender, EventArgs e)
     {
         if (UsernameEntry.Text != null) Username = UsernameEntry.Text;
 
-        var loginSuccessful = _app.AuthenticateCustomer(Username);
+        var loginSuccessful = _userAuthenticationService.AuthenticateCustomer(Username);
         if (loginSuccessful)
         {
             LoginInfoLbl.Text = "Logged in successfully!";
@@ -42,7 +42,7 @@ public partial class MainPage : ContentPage
     {
         if (UsernameEntry.Text != null) Username = UsernameEntry.Text;
 
-        var loginSuccessful = _app.AuthenticateManufacturer(Username);
+        var loginSuccessful = _userAuthenticationService.AuthenticateManufacturer(Username);
         if (loginSuccessful)
         {
             LoginInfoLbl.Text = "Logged in successfully!";
@@ -61,7 +61,23 @@ public partial class MainPage : ContentPage
 
     private async void OnEmployeeLoginClicked(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync(nameof(EmployeePage));
+        if (UsernameEntry.Text != null) Username = UsernameEntry.Text;
+
+        var loginSuccessful = _userAuthenticationService.AuthenticateEmployee(Username);
+        if (loginSuccessful)
+        {
+            LoginInfoLbl.Text = "Logged in successfully!";
+            LoginInfoLbl.TextColor = Colors.LightGreen;
+
+            await Shell.Current.GoToAsync(nameof(EmployeePage));
+        }
+        else
+        {
+            LoginInfoLbl.Text = "Login Failed! Invalid Username!";
+            LoginInfoLbl.TextColor = Colors.Red;
+        }
+
+        LoginInfoLbl.IsVisible = true;
     }
 
     private async void OnRegisterDialogPopup(object sender, EventArgs e)
@@ -71,12 +87,11 @@ public partial class MainPage : ContentPage
 
         var registrationSuccessful = false;
         if (result is not (bool and true)) return;
-        if (popup.Username != null && popup.UserTypeCustomer.HasValue)
+        if (popup.Username != null)
         {
+            registrationSuccessful = _userAuthenticationService.RegisterNewUser(popup.Username, popup.User);
             RegistrationInfoLbl.Text = "Registered successfully! Please Login!";
             RegistrationInfoLbl.TextColor = Colors.LightGreen;
-
-            registrationSuccessful = _app.RegisterNewUser(popup.Username, popup.UserTypeCustomer.Value);
         }
 
         if (!registrationSuccessful)

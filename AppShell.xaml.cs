@@ -1,5 +1,6 @@
 ﻿using Package_System_CRUD.UserPages;
 using Package_System_CRUD.UserPages.Management;
+using Package_System_CRUD.UserPages.Shop;
 
 namespace Package_System_CRUD;
 
@@ -14,5 +15,7 @@ public partial class AppShell : Shell
 
         Routing.RegisterRoute(nameof(ManufacturerOrderManagement), typeof(ManufacturerOrderManagement));
         Routing.RegisterRoute(nameof(EmployeeOrderManagement), typeof(EmployeeOrderManagement));
+
+        Routing.RegisterRoute(nameof(ShopPage), typeof(ShopPage));
     }
 }
