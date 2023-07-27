@@ -2,7 +2,7 @@
 
 namespace Package_System_CRUD.BusinessLogic.Services
 {
-    public interface IModelServiceExtended<T>
+    public interface IOrderService<T>
     {
         public List<T> GetPageList(int pageNumber, int numberOfElements);
         public T? FindById(int id);

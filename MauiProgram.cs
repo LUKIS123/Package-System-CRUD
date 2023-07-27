@@ -51,8 +51,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<IModelService<Customer>, CustomerService>();
         builder.Services.AddSingleton<IModelService<Manufacturer>, ManufacturerService>();
         builder.Services.AddSingleton<IModelService<Employee>, EmployeeService>();
-        builder.Services.AddSingleton<IModelService<Product>, ProductService>();
-        builder.Services.AddSingleton<IModelServiceExtended<Order>, OrderService>();
+        builder.Services.AddSingleton<IProductService<Product>, ProductService>();
+        builder.Services.AddSingleton<IOrderService<Order>, OrderService>();
 
         builder.Services.AddSingleton<MainPage>();
         builder.Services.AddSingleton<CustomerPage>();

@@ -23,5 +23,11 @@ namespace Package_System_CRUD.BusinessLogic.Data
         //         entity.Property(e => e.Username).HasColumnType("VARCHAR");
         //     });
         // }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Product>().Ignore(t => t.Overview);
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

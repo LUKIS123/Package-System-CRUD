@@ -9,8 +9,8 @@ namespace Package_System_CRUD.UserPages;
 
 public partial class ManufacturerPage : ContentPage
 {
-    private readonly IModelServiceExtended<Order> _orderService;
-    private readonly IModelService<Product> _productService;
+    private readonly IOrderService<Order> _orderService;
+    private readonly IProductService<Product> _productService;
     private readonly ConfigurationProperties _properties;
     private readonly OrderCollectionViewModelRepository _orderCollectionViewModelRepository;
     private readonly UserAuthenticationService _userAuthenticationService;
@@ -20,8 +20,8 @@ public partial class ManufacturerPage : ContentPage
     private int _itemCountOnPage = 0;
 
     public ManufacturerPage(
-        IModelServiceExtended<Order> orderService,
-        IModelService<Product> productService,
+        IOrderService<Order> orderService,
+        IProductService<Product> productService,
         ConfigurationProperties properties,
         UserAuthenticationService userAuthenticationService
     )

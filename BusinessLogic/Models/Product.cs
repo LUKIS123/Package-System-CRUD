@@ -16,5 +16,13 @@ namespace Package_System_CRUD.BusinessLogic.Models
         public decimal Price { get; set; }
 
         public string Description { get; set; }
+
+        [NotMapped]
+        public string Overview =>
+            $"Name={Name},\n" +
+            $"Id={Id},\n" +
+            $"ManufacturerId={ManufacturerId},\n" +
+            $"Description={Description},\n" +
+            $"Price={Price}";
     }
 }

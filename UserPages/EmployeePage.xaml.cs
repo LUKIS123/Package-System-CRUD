@@ -8,8 +8,8 @@ namespace Package_System_CRUD.UserPages;
 
 public partial class EmployeePage : ContentPage
 {
-    private readonly IModelServiceExtended<Order> _orderService;
-    private readonly IModelService<Product> _productService;
+    private readonly IOrderService<Order> _orderService;
+    private readonly IProductService<Product> _productService;
     private readonly IModelService<Manufacturer> _manufacturerService;
     private readonly ConfigurationProperties _properties;
     private readonly OrderCollectionViewModelRepository _orderCollectionViewModelRepository;
@@ -17,8 +17,8 @@ public partial class EmployeePage : ContentPage
     private int _itemCountOnPage = 0;
 
     public EmployeePage(
-        IModelServiceExtended<Order> orderService,
-        IModelService<Product> productService,
+        IOrderService<Order> orderService,
+        IProductService<Product> productService,
         IModelService<Customer> customerService,
         IModelService<Manufacturer> manufacturerService,
         ConfigurationProperties properties)
@@ -50,7 +50,7 @@ public partial class EmployeePage : ContentPage
 
     private void OnNextPageBtnClicked(object? sender, EventArgs e)
     {
-        if (_itemCountOnPage < _properties.ManufacturerPageItemCount) return;
+        if (_itemCountOnPage < _properties.EmployeePageItemCount) return;
         _pageNumber++;
         RenderCollectionViewItems();
 
@@ -79,7 +79,7 @@ public partial class EmployeePage : ContentPage
         var ordersById = _orderService
             .GetPageList(
                 _pageNumber,
-                _properties.ManufacturerPageItemCount
+                _properties.EmployeePageItemCount
             );
 
         foreach (var order in ordersById)

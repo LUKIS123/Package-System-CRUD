@@ -3,7 +3,7 @@ using Package_System_CRUD.BusinessLogic.Repositories;
 
 namespace Package_System_CRUD.BusinessLogic.Services
 {
-    public class ProductService : IModelService<Product>
+    public class ProductService : IProductService<Product>
     {
         private readonly IModelRepository<Product> _repository;
 
@@ -45,6 +45,24 @@ namespace Package_System_CRUD.BusinessLogic.Services
         public int GetCount()
         {
             return _repository.GetCount();
+        }
+
+        public List<Product> GetFilteredByManufacturerId(int id)
+        {
+            return _repository
+                .GetFiltered(
+                    (order) => order.ManufacturerId == id
+                );
+        }
+
+        public List<Product> GetFilteredByManufacturerId(int id, int pageNumber, int numberOfElements)
+        {
+            return _repository
+                .GetFiltered(
+                    (order) => order.ManufacturerId == id,
+                    pageNumber,
+                    numberOfElements
+                );
         }
     }
 }

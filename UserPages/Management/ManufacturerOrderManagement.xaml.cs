@@ -8,7 +8,7 @@ namespace Package_System_CRUD.UserPages.Management;
 public partial class ManufacturerOrderManagement : ContentPage
 {
     private OrderCollectionViewModel? _orderCollectionViewModel;
-    private readonly IModelServiceExtended<Order> _orderService;
+    private readonly IOrderService<Order> _orderService;
 
     public OrderCollectionViewModel? OrderCollectionViewModel
     {
@@ -20,7 +20,7 @@ public partial class ManufacturerOrderManagement : ContentPage
         }
     }
 
-    public ManufacturerOrderManagement(IModelServiceExtended<Order> orderService)
+    public ManufacturerOrderManagement(IOrderService<Order> orderService)
     {
         InitializeComponent();
         BindingContext = this;

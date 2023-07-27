@@ -8,11 +8,6 @@
     xmlns:shop="clr-namespace:Package_System_CRUD.UserPages.Shop"
     Shell.FlyoutBehavior="Disabled">
 
-    <!-- <ShellContent -->
-    <!--     Title="Home" -->
-    <!--     ContentTemplate="{DataTemplate local:MainPage}" -->
-    <!--     Route="MainPage" /> -->
-
     <TabBar>
         <Tab Title="User">
             <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />

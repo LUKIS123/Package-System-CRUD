@@ -3,7 +3,7 @@ using Package_System_CRUD.BusinessLogic.Repositories;
 
 namespace Package_System_CRUD.BusinessLogic.Services
 {
-    public class OrderService : IModelServiceExtended<Order>
+    public class OrderService : IOrderService<Order>
     {
         private readonly IModelRepository<Order> _orderRepository;
 

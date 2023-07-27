@@ -4,10 +4,71 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Package_System_CRUD.UserPages.Shop.ShopPage"
              Title="Shop">
-    <VerticalStackLayout>
+
+    <VerticalStackLayout
+        Spacing="10"
+        Padding="30,0">
+
+        <Button
+            x:Name="LoginManufacturerBtn"
+            Text="Refresh"
+            WidthRequest="150"
+            HorizontalOptions="Center"
+            Clicked="OnRefreshButtonClicked">
+        </Button>
+
         <Label
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center"
-            HorizontalOptions="Center" />
+            Text="Your orders:"
+            FontSize="Small"
+            FontAttributes="Bold"
+            HorizontalOptions="Center">
+        </Label>
+
+        <HorizontalStackLayout
+            Spacing="25"
+            Padding="30,0"
+            VerticalOptions="Start"
+            HorizontalOptions="Center">
+            <Button
+                x:Name="PreviousPageBtn"
+                Text="Previous Page"
+                WidthRequest="150"
+                Clicked="OnPreviousBtnClicked">
+            </Button>
+            <Button
+                x:Name="NextPageBtn"
+                Text="Next Page"
+                WidthRequest="150"
+                Clicked="OnNextPageBtnClicked">
+            </Button>
+        </HorizontalStackLayout>
+
+        <Label
+            x:Name="PageNumLbl"
+            Text="Page 0"
+            FontSize="Small"
+            HorizontalOptions="Center">
+        </Label>
+
+        <CollectionView x:Name="collectionView"
+                        SelectionMode="Single"
+                        SelectionChanged="OnSelectionChanged"
+                        Margin="25"
+                        VerticalOptions="Fill"
+                        HorizontalOptions="Center">
+
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Label Text="{Binding Overview}" FontSize="Micro" />
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+
     </VerticalStackLayout>
+
 </ContentPage>

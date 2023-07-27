@@ -16,7 +16,6 @@
             HorizontalOptions="Center" />
 
         <Button
-            x:Name="LoginManufacturerBtn"
             Text="Refresh"
             WidthRequest="150"
             HorizontalOptions="Center"
