@@ -2,13 +2,13 @@
 
 namespace Package_System_CRUD.BusinessLogic.Interface
 {
-    public class OrderCollectionViewModelRepository
+    public class OrderCollectionViewItemRepository
     {
-        public List<OrderCollectionViewModel> OrderCollection { get; set; } = new();
+        public List<OrderCollectionViewItem> OrderCollection { get; set; } = new();
 
         public void Add(Order order, string manufacturer, string product)
         {
-            OrderCollection.Add(new OrderCollectionViewModel
+            OrderCollection.Add(new OrderCollectionViewItem
             {
                 Id = order.Id,
                 CustomerName = order.CustomerName,

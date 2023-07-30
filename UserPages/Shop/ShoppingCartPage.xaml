@@ -2,29 +2,9 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Package_System_CRUD.UserPages.Shop.ShopPage"
-             Title="Shop">
-
-    <VerticalStackLayout
-        Spacing="10"
-        Padding="30,0">
-
-        <HorizontalStackLayout
-            x:Name="UpperControlsStackLayout"
-            Spacing="50"
-            Padding="30,0"
-            VerticalOptions="Start"
-            HorizontalOptions="Center">
-
-            <Button
-                x:Name="LoginManufacturerBtn"
-                Text="Refresh"
-                WidthRequest="150"
-                HorizontalOptions="Center"
-                Clicked="OnRefreshButtonClicked">
-            </Button>
-
-        </HorizontalStackLayout>
+             x:Class="Package_System_CRUD.UserPages.Shop.ShoppingCartPage"
+             Title="Shopping Cart">
+    <VerticalStackLayout>
 
         <Label
             Text="Your orders:"
@@ -61,7 +41,6 @@
 
         <CollectionView x:Name="collectionView"
                         SelectionMode="Single"
-                        SelectionChanged="OnSelectionChanged"
                         Margin="25"
                         VerticalOptions="Fill"
                         HorizontalOptions="Center">
@@ -72,11 +51,29 @@
 
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Label Text="{Binding Overview}" FontSize="Micro" />
+
+                    <HorizontalStackLayout
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        Spacing="50">
+
+                        <Label Text="{Binding Overview}" FontSize="Micro" />
+                        <Button Text="Remove Item" Clicked="OnRemoveButtonClicked" />
+
+                    </HorizontalStackLayout>
+
                 </DataTemplate>
             </CollectionView.ItemTemplate>
 
         </CollectionView>
+
+        <Button
+            HorizontalOptions="Center"
+            VerticalOptions="End"
+            WidthRequest="150"
+            Text="Submit Orders"
+            Clicked="OnSubmitOrdersButtonClicked">
+        </Button>
 
     </VerticalStackLayout>
 

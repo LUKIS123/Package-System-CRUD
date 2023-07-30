@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace Package_System_CRUD.BusinessLogic.Interface
 {
-    public class OrderCollectionViewModel : INotifyPropertyChanged
+    public class OrderCollectionViewItem : INotifyPropertyChanged
     {
         private int _id;
         private string? _customerName;

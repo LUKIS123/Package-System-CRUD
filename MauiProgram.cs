@@ -48,6 +48,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<IModelRepository<Order>, OrderRepository>();
 
         builder.Services.AddSingleton<UserAuthenticationService>();
+        builder.Services.AddSingleton<ShopCartService>();
+
         builder.Services.AddSingleton<IModelService<Customer>, CustomerService>();
         builder.Services.AddSingleton<IModelService<Manufacturer>, ManufacturerService>();
         builder.Services.AddSingleton<IModelService<Employee>, EmployeeService>();
@@ -62,6 +64,8 @@ public static class MauiProgram
 
         builder.Services.AddTransient<EmployeeOrderManagement>();
         builder.Services.AddTransient<ManufacturerOrderManagement>();
+        builder.Services.AddTransient<ProductSelectionPage>();
+        builder.Services.AddTransient<ShoppingCartPage>();
 
 #if DEBUG
         builder.Logging.AddDebug();

@@ -7,10 +7,10 @@ namespace Package_System_CRUD.UserPages.Management;
 [QueryProperty(nameof(OrderCollectionViewModel), "OrderCollectionViewModel")]
 public partial class ManufacturerOrderManagement : ContentPage
 {
-    private OrderCollectionViewModel? _orderCollectionViewModel;
+    private OrderCollectionViewItem? _orderCollectionViewModel;
     private readonly IOrderService<Order> _orderService;
 
-    public OrderCollectionViewModel? OrderCollectionViewModel
+    public OrderCollectionViewItem? OrderCollectionViewModel
     {
         get => _orderCollectionViewModel;
         set

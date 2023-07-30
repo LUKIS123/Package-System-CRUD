@@ -1,3 +1,4 @@
+using Package_System_CRUD.BusinessLogic;
 using Package_System_CRUD.BusinessLogic.Config;
 using Package_System_CRUD.BusinessLogic.Interface;
 using Package_System_CRUD.BusinessLogic.Models;
@@ -11,24 +12,27 @@ public partial class EmployeePage : ContentPage
     private readonly IOrderService<Order> _orderService;
     private readonly IProductService<Product> _productService;
     private readonly IModelService<Manufacturer> _manufacturerService;
+    private readonly UserAuthenticationService _userAuthenticationService;
     private readonly ConfigurationProperties _properties;
-    private readonly OrderCollectionViewModelRepository _orderCollectionViewModelRepository;
+    private readonly OrderCollectionViewItemRepository _orderCollectionViewItemRepository;
     private int _pageNumber = 0;
     private int _itemCountOnPage = 0;
 
     public EmployeePage(
         IOrderService<Order> orderService,
         IProductService<Product> productService,
-        IModelService<Customer> customerService,
         IModelService<Manufacturer> manufacturerService,
-        ConfigurationProperties properties)
+        UserAuthenticationService userAuthenticationService,
+        ConfigurationProperties properties
+    )
     {
         InitializeComponent();
         _orderService = orderService;
         _productService = productService;
         _manufacturerService = manufacturerService;
+        _userAuthenticationService = userAuthenticationService;
         _properties = properties;
-        _orderCollectionViewModelRepository = new OrderCollectionViewModelRepository();
+        _orderCollectionViewItemRepository = new OrderCollectionViewItemRepository();
     }
 
     protected override void OnAppearing()
@@ -36,7 +40,7 @@ public partial class EmployeePage : ContentPage
         base.OnAppearing();
         RenderCollectionViewItems();
 
-        WelcomeLbl.Text = $"Welcome!";
+        WelcomeLbl.Text = $"Welcome {_userAuthenticationService.LoggedUser}!";
     }
 
     private void OnPreviousBtnClicked(object? sender, EventArgs e)
@@ -59,12 +63,12 @@ public partial class EmployeePage : ContentPage
 
     private async void OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        var selectedOrderViewModel = e.CurrentSelection.FirstOrDefault() as OrderCollectionViewModel;
-        if (selectedOrderViewModel == null) return;
+        var selectedOrderViewItem = e.CurrentSelection.FirstOrDefault() as OrderCollectionViewItem;
+        if (selectedOrderViewItem == null) return;
 
         var navigationParameter = new Dictionary<string, object>
         {
-            { nameof(OrderCollectionViewModel), selectedOrderViewModel }
+            { nameof(OrderCollectionViewItem), selectedOrderViewItem }
         };
 
         await Shell.Current.GoToAsync(nameof(EmployeeOrderManagement), navigationParameter);
@@ -73,7 +77,7 @@ public partial class EmployeePage : ContentPage
     private void RenderCollectionViewItems()
     {
         collectionView.ItemsSource = null;
-        _orderCollectionViewModelRepository.OrderCollection.Clear();
+        _orderCollectionViewItemRepository.OrderCollection.Clear();
 
         _itemCountOnPage = 0;
         var ordersById = _orderService
@@ -84,7 +88,7 @@ public partial class EmployeePage : ContentPage
 
         foreach (var order in ordersById)
         {
-            _orderCollectionViewModelRepository.Add(
+            _orderCollectionViewItemRepository.Add(
                 order,
                 _manufacturerService.FindById(order.ManufacturerId)?.Name,
                 _productService.FindById(order.ProductId)?.Name
@@ -92,7 +96,7 @@ public partial class EmployeePage : ContentPage
             _itemCountOnPage++;
         }
 
-        collectionView.ItemsSource = _orderCollectionViewModelRepository.OrderCollection;
+        collectionView.ItemsSource = _orderCollectionViewItemRepository.OrderCollection;
     }
 
     private void OnRefreshButtonClicked(object? sender, EventArgs e)

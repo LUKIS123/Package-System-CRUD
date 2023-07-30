@@ -26,7 +26,9 @@ namespace Package_System_CRUD.BusinessLogic.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Product>().Ignore(t => t.Overview);
+            modelBuilder.Entity<Product>().Ignore(p => p.Overview);
+            modelBuilder.Entity<Order>().Ignore(o => o.Overview);
+
             base.OnModelCreating(modelBuilder);
         }
     }

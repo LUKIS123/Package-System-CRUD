@@ -30,5 +30,12 @@ namespace Package_System_CRUD.BusinessLogic.Models
         public DateTime? SentToCustomer { get; set; }
 
         public DateTime? Completed { get; set; }
+
+        [NotMapped]
+        public string Overview =>
+            $"Product ID: {ProductId}\n" +
+            $"Quantity: {Quantity}, " +
+            $"Manufacturer ID: {ManufacturerId}\n" +
+            $"Status: {Status.ToString()}";
     }
 }

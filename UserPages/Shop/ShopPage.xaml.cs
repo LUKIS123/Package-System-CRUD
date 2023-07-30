@@ -7,27 +7,28 @@ namespace Package_System_CRUD.UserPages.Shop;
 
 public partial class ShopPage : ContentPage
 {
-    private readonly IOrderService<Order> _orderService;
+    private readonly ShopCartService _shopCartService;
     private readonly IProductService<Product> _productService;
-    private readonly IModelService<Manufacturer> _manufacturerService;
     private readonly UserAuthenticationService _userAuthenticationService;
     private readonly ConfigurationProperties _properties;
     private int _pageNumber = 0;
     private int _itemCountOnPage = 0;
 
+    private Button? _addProductButton;
+    private Button? _shoppingCartButton;
+
+
     public ShopPage(
-        IOrderService<Order> orderService,
+        ShopCartService shopCartService,
         IProductService<Product> productService,
-        IModelService<Manufacturer> manufacturerService,
         ConfigurationProperties properties,
         UserAuthenticationService userAuthenticationService
     )
     {
         InitializeComponent();
         _productService = productService;
-        _orderService = orderService;
+        _shopCartService = shopCartService;
         _properties = properties;
-        _manufacturerService = manufacturerService;
         _userAuthenticationService = userAuthenticationService;
     }
 
@@ -37,10 +38,17 @@ public partial class ShopPage : ContentPage
         RenderCollectionViewItems();
     }
 
-    private void OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    private async void OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        // todo
-        // dodac moze nieuzywana properte jesli chodzi o Order i zzrezygnowac z OrderCollectionViewModel
+        var selectedProduct = e.CurrentSelection.FirstOrDefault() as Product;
+        if (selectedProduct == null) return;
+
+        var navigationParameter = new Dictionary<string, object>
+        {
+            { nameof(Product), selectedProduct }
+        };
+
+        await Shell.Current.GoToAsync(nameof(ProductSelectionPage), navigationParameter);
     }
 
     private void OnNextPageBtnClicked(object? sender, EventArgs e)
@@ -75,11 +83,54 @@ public partial class ShopPage : ContentPage
                     _pageNumber,
                     _properties.ShopPageItemCount
                 );
+
+
+            if (_addProductButton is not null) UpperControlsStackLayout.Remove(_addProductButton);
+
+            Application.Current?.Dispatcher.Dispatch(() =>
+            {
+                var btn = new Button
+                {
+                    Text = "Add Product",
+                    HorizontalOptions = LayoutOptions.Center,
+                    VerticalOptions = LayoutOptions.Center,
+                    WidthRequest = 150
+                };
+
+                btn.Clicked += (sender, e) =>
+                {
+                    // todo
+                };
+
+                UpperControlsStackLayout.Add(btn);
+                _addProductButton = btn;
+            });
         }
         else
         {
             productList = _productService
                 .GetPageList(_pageNumber, _properties.ShopPageItemCount);
+
+            if (_userAuthenticationService.UserType == UserType.Customer)
+            {
+                if (_shoppingCartButton is not null) UpperControlsStackLayout.Remove(_shoppingCartButton);
+
+                Application.Current?.Dispatcher.Dispatch(() =>
+                {
+                    var btn = new Button
+                    {
+                        Text = "Shopping Cart " + _shopCartService.Count,
+                        HorizontalOptions = LayoutOptions.Center,
+                        VerticalOptions = LayoutOptions.Center,
+                        WidthRequest = 150
+                    };
+
+                    btn.Clicked += (sender, args) => { Shell.Current.GoToAsync(nameof(ShoppingCartPage)); };
+
+                    UpperControlsStackLayout.Add(btn);
+                    _shoppingCartButton = btn;
+                });
+            }
         }
 
         _itemCountOnPage = productList.Count;
@@ -88,6 +139,9 @@ public partial class ShopPage : ContentPage
 
     private void OnRefreshButtonClicked(object? sender, EventArgs e)
     {
+        UpperControlsStackLayout.Remove(_addProductButton);
+        UpperControlsStackLayout.Remove(_shoppingCartButton);
+
         RenderCollectionViewItems();
     }
 }

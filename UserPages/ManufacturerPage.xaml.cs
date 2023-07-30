@@ -12,7 +12,7 @@ public partial class ManufacturerPage : ContentPage
     private readonly IOrderService<Order> _orderService;
     private readonly IProductService<Product> _productService;
     private readonly ConfigurationProperties _properties;
-    private readonly OrderCollectionViewModelRepository _orderCollectionViewModelRepository;
+    private readonly OrderCollectionViewItemRepository _orderCollectionViewItemRepository;
     private readonly UserAuthenticationService _userAuthenticationService;
     public string Username { get; private set; } = string.Empty;
     public int ManufacturerId { get; private set; }
@@ -31,7 +31,7 @@ public partial class ManufacturerPage : ContentPage
         _productService = productService;
         _properties = properties;
         _userAuthenticationService = userAuthenticationService;
-        _orderCollectionViewModelRepository = new OrderCollectionViewModelRepository();
+        _orderCollectionViewItemRepository = new OrderCollectionViewItemRepository();
     }
 
     protected override void OnAppearing()
@@ -66,12 +66,12 @@ public partial class ManufacturerPage : ContentPage
 
     private async void OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        var selectedOrderViewModel = e.CurrentSelection.FirstOrDefault() as OrderCollectionViewModel;
-        if (selectedOrderViewModel == null) return;
+        var selectedOrderViewItem = e.CurrentSelection.FirstOrDefault() as OrderCollectionViewItem;
+        if (selectedOrderViewItem == null) return;
 
         var navigationParameter = new Dictionary<string, object>
         {
-            { nameof(OrderCollectionViewModel), selectedOrderViewModel }
+            { nameof(OrderCollectionViewItem), selectedOrderViewItem }
         };
 
         await Shell.Current.GoToAsync(nameof(ManufacturerOrderManagement), navigationParameter);
@@ -80,7 +80,7 @@ public partial class ManufacturerPage : ContentPage
     private void RenderCollectionViewItems()
     {
         collectionView.ItemsSource = null;
-        _orderCollectionViewModelRepository.OrderCollection.Clear();
+        _orderCollectionViewItemRepository.OrderCollection.Clear();
 
         _itemCountOnPage = 0;
         var ordersById = _orderService
@@ -92,7 +92,7 @@ public partial class ManufacturerPage : ContentPage
 
         foreach (var order in ordersById)
         {
-            _orderCollectionViewModelRepository.Add(
+            _orderCollectionViewItemRepository.Add(
                 order,
                 Username,
                 _productService.FindById(order.ProductId)?.Name
@@ -100,7 +100,7 @@ public partial class ManufacturerPage : ContentPage
             _itemCountOnPage++;
         }
 
-        collectionView.ItemsSource = _orderCollectionViewModelRepository.OrderCollection;
+        collectionView.ItemsSource = _orderCollectionViewItemRepository.OrderCollection;
     }
 
     private void OnRefreshButtonClicked(object? sender, EventArgs e)

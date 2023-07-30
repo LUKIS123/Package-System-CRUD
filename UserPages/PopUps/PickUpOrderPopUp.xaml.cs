@@ -7,10 +7,10 @@ namespace Package_System_CRUD.UserPages.PopUps;
 [QueryProperty(nameof(OrderCollectionViewModel), "OrderCollectionViewModel")]
 public partial class PickUpOrderPopUp : Popup
 {
-    private OrderCollectionViewModel? _orderCollectionViewModel;
+    private OrderCollectionViewItem? _orderCollectionViewModel;
     private bool _isPickedUp = false;
 
-    public OrderCollectionViewModel? OrderCollectionViewModel
+    public OrderCollectionViewItem? OrderCollectionViewModel
     {
         get => _orderCollectionViewModel;
         set
@@ -20,7 +20,7 @@ public partial class PickUpOrderPopUp : Popup
         }
     }
 
-    public PickUpOrderPopUp(OrderCollectionViewModel? orderCollectionViewModel)
+    public PickUpOrderPopUp(OrderCollectionViewItem? orderCollectionViewModel)
     {
         InitializeComponent();
         OrderCollectionViewModel = orderCollectionViewModel;

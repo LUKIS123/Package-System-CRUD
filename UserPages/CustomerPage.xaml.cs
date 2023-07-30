@@ -14,7 +14,7 @@ public partial class CustomerPage : ContentPage
     private readonly IProductService<Product> _productService;
     private readonly IModelService<Manufacturer> _manufacturerService;
     private readonly ConfigurationProperties _properties;
-    private readonly OrderCollectionViewModelRepository _orderCollectionViewModelRepository;
+    private readonly OrderCollectionViewItemRepository _orderCollectionViewItemRepository;
     private readonly UserAuthenticationService _userAuthenticationService;
     public string Username { get; private set; } = string.Empty;
     public int UserId { get; private set; }
@@ -35,7 +35,7 @@ public partial class CustomerPage : ContentPage
         _properties = properties;
         _manufacturerService = manufacturerService;
         _userAuthenticationService = userAuthenticationService;
-        _orderCollectionViewModelRepository = new OrderCollectionViewModelRepository();
+        _orderCollectionViewItemRepository = new OrderCollectionViewItemRepository();
     }
 
     protected override void OnAppearing()
@@ -68,14 +68,14 @@ public partial class CustomerPage : ContentPage
 
     private async void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        var selectedOrderViewModel = e.CurrentSelection.FirstOrDefault() as OrderCollectionViewModel;
-        if (selectedOrderViewModel == null) return;
+        var selectedOrderViewItem = e.CurrentSelection.FirstOrDefault() as OrderCollectionViewItem;
+        if (selectedOrderViewItem == null) return;
 
-        var popup = new PickUpOrderPopUp(selectedOrderViewModel);
+        var popup = new PickUpOrderPopUp(selectedOrderViewItem);
         var result = await this.ShowPopupAsync(popup);
         if (result is not (bool and true)) return;
 
-        var order = _orderService.FindById(selectedOrderViewModel.Id);
+        var order = _orderService.FindById(selectedOrderViewItem.Id);
         if (order is null) return;
 
         order.Status = OrderStatus.PickedUp;
@@ -86,7 +86,7 @@ public partial class CustomerPage : ContentPage
     private void RenderCollectionViewItems()
     {
         collectionView.ItemsSource = null;
-        _orderCollectionViewModelRepository.OrderCollection.Clear();
+        _orderCollectionViewItemRepository.OrderCollection.Clear();
 
         _itemCountOnPage = 0;
         var ordersById = _orderService
@@ -98,7 +98,7 @@ public partial class CustomerPage : ContentPage
 
         foreach (var order in ordersById)
         {
-            _orderCollectionViewModelRepository.Add(
+            _orderCollectionViewItemRepository.Add(
                 order,
                 _manufacturerService.FindById(order.ManufacturerId)?.Name,
                 _productService.FindById(order.ProductId)?.Name
@@ -106,7 +106,7 @@ public partial class CustomerPage : ContentPage
             _itemCountOnPage++;
         }
 
-        collectionView.ItemsSource = _orderCollectionViewModelRepository.OrderCollection;
+        collectionView.ItemsSource = _orderCollectionViewItemRepository.OrderCollection;
     }
 
     private void OnRefreshButtonClicked(object? sender, EventArgs e)

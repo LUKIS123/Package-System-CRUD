@@ -7,6 +7,7 @@
         InRealization = 2,
         Sent = 3,
         ReadyToPickUp = 4,
-        PickedUp = 5
+        PickedUp = 5,
+        InCart = 6
     }
 }
