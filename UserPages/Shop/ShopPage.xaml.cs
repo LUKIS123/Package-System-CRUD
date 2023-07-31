@@ -17,7 +17,6 @@ public partial class ShopPage : ContentPage
     private Button? _addProductButton;
     private Button? _shoppingCartButton;
 
-
     public ShopPage(
         ShopCartService shopCartService,
         IProductService<Product> productService,
@@ -72,6 +71,8 @@ public partial class ShopPage : ContentPage
     private void RenderCollectionViewItems()
     {
         collectionView.ItemsSource = null;
+        if (_shoppingCartButton is not null) UpperControlsStackLayout.Remove(_shoppingCartButton);
+        if (_addProductButton is not null) UpperControlsStackLayout.Remove(_addProductButton);
         _itemCountOnPage = 0;
 
         List<Product> productList;
@@ -84,9 +85,6 @@ public partial class ShopPage : ContentPage
                     _properties.ShopPageItemCount
                 );
 
-
-            if (_addProductButton is not null) UpperControlsStackLayout.Remove(_addProductButton);
-
             Application.Current?.Dispatcher.Dispatch(() =>
             {
                 var btn = new Button
@@ -97,10 +95,7 @@ public partial class ShopPage : ContentPage
                     WidthRequest = 150
                 };
 
-                btn.Clicked += (sender, e) =>
-                {
-                    // todo
-                };
+                btn.Clicked += (sender, e) => { Shell.Current.GoToAsync(nameof(AddNewProductPage)); };
 
                 UpperControlsStackLayout.Add(btn);
                 _addProductButton = btn;
@@ -113,8 +108,6 @@ public partial class ShopPage : ContentPage
 
             if (_userAuthenticationService.UserType == UserType.Customer)
             {
-                if (_shoppingCartButton is not null) UpperControlsStackLayout.Remove(_shoppingCartButton);
-
                 Application.Current?.Dispatcher.Dispatch(() =>
                 {
                     var btn = new Button

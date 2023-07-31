@@ -60,7 +60,7 @@ public partial class ManufacturerOrderManagement : ContentPage
 
     private async void OnStatusChangedButtonClicked(object? sender, EventArgs e)
     {
-        if (OrderCollectionViewModel.Status is not (OrderStatus.Received or OrderStatus.InRealization))
+        if (OrderCollectionViewModel?.Status is not (OrderStatus.Received or OrderStatus.InRealization))
         {
             return;
         }

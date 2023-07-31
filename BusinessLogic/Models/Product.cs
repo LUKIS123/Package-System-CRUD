@@ -19,8 +19,8 @@ namespace Package_System_CRUD.BusinessLogic.Models
 
         [NotMapped]
         public string Overview =>
-            $"Name={Name},\n" +
-            $"ManufacturerId={ManufacturerId},\n" +
-            $"Price={Price}";
+            $"Name: {Name},\n" +
+            $"ManufacturerId: {ManufacturerId},\n" +
+            $"Price: {Price}\n";
     }
 }

@@ -18,7 +18,15 @@
             </TableRoot>
         </TableView>
 
-        <Button Text="Buy" Grid.Row="2" Grid.Column="0"
+        <VerticalStackLayout
+            x:Name="StackLayout"
+            Spacing="10"
+            Padding="30,0"
+            Grid.Row="2"
+            Grid.Column="1">
+        </VerticalStackLayout>
+
+        <Button x:Name="BuyButton" Text="Buy" Grid.Row="2" Grid.Column="0"
                 Clicked="BuyProductButtonClicked" Margin="20,5" />
         <Button Text="Return" Grid.Row="2" Grid.Column="2"
                 Clicked="OnReturnButtonClicked" Margin="20,5" />

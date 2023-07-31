@@ -66,6 +66,7 @@ public static class MauiProgram
         builder.Services.AddTransient<ManufacturerOrderManagement>();
         builder.Services.AddTransient<ProductSelectionPage>();
         builder.Services.AddTransient<ShoppingCartPage>();
+        builder.Services.AddTransient<AddNewProductPage>();
 
 #if DEBUG
         builder.Logging.AddDebug();

@@ -64,7 +64,7 @@
                         SelectionChanged="OnSelectionChanged"
                         Margin="25"
                         VerticalOptions="Fill"
-                        HorizontalOptions="Center">
+                        HorizontalOptions="Fill">
 
             <CollectionView.ItemsLayout>
                 <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />

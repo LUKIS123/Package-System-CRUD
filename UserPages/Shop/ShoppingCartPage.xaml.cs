@@ -57,9 +57,10 @@ public partial class ShoppingCartPage : ContentPage
         RenderCollectionViewItems();
     }
 
-    private void OnSubmitOrdersButtonClicked(object? sender, EventArgs e)
+    private async void OnSubmitOrdersButtonClicked(object? sender, EventArgs e)
     {
+        if (sender is Button btn) btn.IsEnabled = false;
         _shopCartService.SubmitOrders();
-        RenderCollectionViewItems();
+        await Shell.Current.GoToAsync("..");
     }
 }
