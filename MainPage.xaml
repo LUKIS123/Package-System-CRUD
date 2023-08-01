@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Package_System_CRUD.MainPage"
+             Title="Home Page">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Spacing="25"
+            Padding="30,0"
+            VerticalOptions="Center">
+
+            <Label
+                Text="Package System CRUD App"
+                SemanticProperties.HeadingLevel="Level1"
+                FontSize="32"
+                HorizontalOptions="Center" />
+
+            <Image
+                Source="dotnet_bot.png"
+                SemanticProperties.Description="Cute dot net bot waving hi to you!"
+                HeightRequest="200"
+                HorizontalOptions="Center" />
+
+            <Label
+                Text="Please Login or Register"
+                SemanticProperties.HeadingLevel="Level1"
+                FontSize="32"
+                HorizontalOptions="Center" />
+
+            <Label
+                Text="Login with Username:"
+                SemanticProperties.HeadingLevel="Level2"
+                SemanticProperties.Description="Login"
+                FontSize="18"
+                HorizontalOptions="Center" />
+
+            <Entry x:Name="UsernameEntry"
+                   Text="{Binding Path=Username}"
+                   Placeholder="Enter your Username"
+                   BackgroundColor="White"
+                   TextColor="Black"
+                   SemanticProperties.Hint="Enter your Username"
+                   WidthRequest="200"
+                   HorizontalOptions="Center" />
+
+            <Label
+                x:Name="LoginInfoLbl"
+                Text="Logged in successfully!"
+                FontSize="12"
+                TextColor="LightGreen"
+                IsVisible="False"
+                SemanticProperties.Description="LoginInfo"
+                HorizontalOptions="Center" />
+
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="25">
+                <Button
+                    x:Name="LoginCustomerBtn"
+                    Text="Login as Customer"
+                    SemanticProperties.Hint="Logs in as Customer"
+                    Clicked="OnCustomerLoginClicked"
+                    HorizontalOptions="Center" />
+
+                <Button
+                    x:Name="LoginManufacturerBtn"
+                    Text="Login as Manufacturer"
+                    SemanticProperties.Hint="Logs in as Customer"
+                    Clicked="OnManufacturerLoginClicked"
+                    HorizontalOptions="Center">
+                </Button>
+
+                <Button
+                    x:Name="LoginEmployeeBtn"
+                    Text="Login as Employee"
+                    SemanticProperties.Hint="Logs in as Employee"
+                    Clicked="OnEmployeeLoginClicked"
+                    HorizontalOptions="Center">
+                </Button>
+            </HorizontalStackLayout>
+
+            <Label
+                x:Name="RegistrationInfoLbl"
+                Text="Registered successfully! Please Login!"
+                FontSize="12"
+                TextColor="LightGreen"
+                IsVisible="False"
+                SemanticProperties.Description="RegistrationInfo"
+                HorizontalOptions="Center" />
+
+            <Button
+                x:Name="RegisterBtn"
+                BackgroundColor="DarkViolet"
+                TextColor="White"
+                Text="Register"
+                FontSize="24"
+                WidthRequest="150"
+                HeightRequest="75"
+                SemanticProperties.Hint="Open Register Dialog"
+                Clicked="OnRegisterDialogPopup"
+                HorizontalOptions="Center">
+            </Button>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
