@@ -8,7 +8,6 @@
         public void AddToDatabase(T model);
         public void RemoveFromDatabase(T model);
         public void UpdateEntity(T entity);
-        public int GetCount();
         public List<T> GetFilteredByManufacturerId(int id);
         public List<T> GetFilteredByManufacturerId(int id, int pageNumber, int numberOfElements);
     }

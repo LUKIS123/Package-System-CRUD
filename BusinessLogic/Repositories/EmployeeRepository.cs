@@ -1,4 +1,5 @@
-﻿using Package_System_CRUD.BusinessLogic.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Package_System_CRUD.BusinessLogic.Data;
 using Package_System_CRUD.BusinessLogic.Models;
 
 namespace Package_System_CRUD.BusinessLogic.Repositories
@@ -9,27 +10,9 @@ namespace Package_System_CRUD.BusinessLogic.Repositories
         {
         }
 
-        protected override IQueryable<Employee> GetTable()
+        protected override DbSet<Employee> GetTable()
         {
             return DbContext.Employees;
-        }
-
-        public override void SaveEntity(Employee entity)
-        {
-            DbContext.Employees.Add(entity);
-            DbContext.SaveChanges();
-        }
-
-        public override void DeleteEntity(Employee entity)
-        {
-            DbContext.Employees.Remove(entity);
-            DbContext.SaveChanges();
-        }
-
-        public override void UpdateEntity(Employee entity)
-        {
-            DbContext.Employees.Update(entity);
-            DbContext.SaveChanges();
         }
     }
 }

@@ -1,8 +1,9 @@
-﻿using Package_System_CRUD.BusinessLogic.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Package_System_CRUD.BusinessLogic.Data;
 
 namespace Package_System_CRUD.BusinessLogic.Repositories
 {
-    public abstract class BaseModelRepository<T> : IModelRepository<T>
+    public abstract class BaseModelRepository<T> : IModelRepository<T> where T : class
     {
         protected readonly AppDbContext DbContext;
 
@@ -11,13 +12,25 @@ namespace Package_System_CRUD.BusinessLogic.Repositories
             DbContext = dbContext;
         }
 
-        protected abstract IQueryable<T> GetTable();
+        protected abstract DbSet<T> GetTable();
 
-        public abstract void SaveEntity(T entity);
+        public void SaveEntity(T entity)
+        {
+            GetTable().Add(entity);
+            DbContext.SaveChanges();
+        }
 
-        public abstract void DeleteEntity(T entity);
+        public void DeleteEntity(T entity)
+        {
+            GetTable().Remove(entity);
+            DbContext.SaveChanges();
+        }
 
-        public abstract void UpdateEntity(T entity);
+        public void UpdateEntity(T entity)
+        {
+            GetTable().Update(entity);
+            DbContext.SaveChanges();
+        }
 
         public T? FindById(Func<T, bool> idGetter)
         {
@@ -31,12 +44,6 @@ namespace Package_System_CRUD.BusinessLogic.Repositories
                 .FirstOrDefault(nameGetter);
         }
 
-        public int GetCount()
-        {
-            return GetTable()
-                .Count();
-        }
-
         public List<T> LoadPage(int pageNumber, int numberOfElements)
         {
             return GetTable()
@@ -48,7 +55,6 @@ namespace Package_System_CRUD.BusinessLogic.Repositories
         public List<T> GetFiltered(Func<T, bool> condition)
         {
             return GetTable()
-                .AsEnumerable()
                 .Where(condition)
                 .ToList();
         }
@@ -56,7 +62,6 @@ namespace Package_System_CRUD.BusinessLogic.Repositories
         public List<T> GetFiltered(Func<T, bool> condition, int pageNumber, int numberOfElements)
         {
             return GetTable()
-                .AsEnumerable()
                 .Where(condition)
                 .Skip(pageNumber * numberOfElements)
                 .Take(numberOfElements)

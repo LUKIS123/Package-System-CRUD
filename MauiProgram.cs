@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Package_System_CRUD.BusinessLogic.Config;
 using Package_System_CRUD.BusinessLogic.Data;
+using Package_System_CRUD.BusinessLogic.DateTimeProvider;
 using Package_System_CRUD.BusinessLogic.Models;
 using Package_System_CRUD.BusinessLogic.Repositories;
 using Package_System_CRUD.BusinessLogic.Services.Authentication;
@@ -43,7 +44,9 @@ public static class MauiProgram
                 .AddJsonFile("appsettings.json")
                 .Build()
         );
+
         builder.Services.AddSingleton<ConfigurationProperties>();
+        builder.Services.AddDateTimeProvider(builder.Configuration);
 
         builder.Services.AddSingleton<IModelRepository<Customer>, CustomerRepository>();
         builder.Services.AddSingleton<IModelRepository<Manufacturer>, ManufacturerRepository>();

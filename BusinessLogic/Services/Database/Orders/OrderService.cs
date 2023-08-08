@@ -45,11 +45,6 @@ namespace Package_System_CRUD.BusinessLogic.Services.Database.Orders
             _orderRepository.UpdateEntity(entity);
         }
 
-        public int GetCount()
-        {
-            return _orderRepository.GetCount();
-        }
-
         public List<Order> GetFilteredByUserId(int id)
         {
             return _orderRepository

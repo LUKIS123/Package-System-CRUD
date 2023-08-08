@@ -45,11 +45,6 @@ namespace Package_System_CRUD.BusinessLogic.Services.Database.Products
             _repository.UpdateEntity(entity);
         }
 
-        public int GetCount()
-        {
-            return _repository.GetCount();
-        }
-
         public List<Product> GetFilteredByManufacturerId(int id)
         {
             return _repository

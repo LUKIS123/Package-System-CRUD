@@ -43,10 +43,5 @@ namespace Package_System_CRUD.BusinessLogic.Services.Database
         {
             _repository.UpdateEntity(entity);
         }
-
-        public int GetCount()
-        {
-            return _repository.GetCount();
-        }
     }
 }

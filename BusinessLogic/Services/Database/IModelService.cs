@@ -8,6 +8,5 @@
         public void AddToDatabase(T model);
         public void RemoveFromDatabase(T model);
         public void UpdateEntity(T entity);
-        public int GetCount();
     }
 }
