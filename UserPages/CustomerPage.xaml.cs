@@ -1,9 +1,11 @@
 using CommunityToolkit.Maui.Views;
-using Package_System_CRUD.BusinessLogic;
 using Package_System_CRUD.BusinessLogic.Config;
 using Package_System_CRUD.BusinessLogic.Interface;
 using Package_System_CRUD.BusinessLogic.Models;
-using Package_System_CRUD.BusinessLogic.Services;
+using Package_System_CRUD.BusinessLogic.Services.Authentication;
+using Package_System_CRUD.BusinessLogic.Services.Database;
+using Package_System_CRUD.BusinessLogic.Services.Database.Orders;
+using Package_System_CRUD.BusinessLogic.Services.Database.Products;
 using Package_System_CRUD.UserPages.PopUps;
 
 namespace Package_System_CRUD.UserPages;
@@ -13,9 +15,9 @@ public partial class CustomerPage : ContentPage
     private readonly IOrderService<Order> _orderService;
     private readonly IProductService<Product> _productService;
     private readonly IModelService<Manufacturer> _manufacturerService;
+    private readonly IUserAuthenticationService _userAuthenticationService;
     private readonly ConfigurationProperties _properties;
     private readonly OrderCollectionViewItemRepository _orderCollectionViewItemRepository;
-    private readonly UserAuthenticationService _userAuthenticationService;
     public string Username { get; private set; } = string.Empty;
     public int UserId { get; private set; }
     private int _pageNumber = 0;
@@ -25,8 +27,8 @@ public partial class CustomerPage : ContentPage
         IOrderService<Order> orderService,
         IProductService<Product> productService,
         IModelService<Manufacturer> manufacturerService,
-        ConfigurationProperties properties,
-        UserAuthenticationService userAuthenticationService
+        IUserAuthenticationService userAuthenticationService,
+        ConfigurationProperties properties
     )
     {
         InitializeComponent();
@@ -41,8 +43,8 @@ public partial class CustomerPage : ContentPage
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        Username = _userAuthenticationService.LoggedUser;
-        UserId = _userAuthenticationService.LoggedUserId;
+        Username = _userAuthenticationService.GetLoggedUsername();
+        UserId = _userAuthenticationService.GetLoggedUserId();
         RenderCollectionViewItems();
 
         WelcomeLbl.Text = $"Welcome {Username}! : ID={UserId}";
@@ -85,7 +87,7 @@ public partial class CustomerPage : ContentPage
 
     private void RenderCollectionViewItems()
     {
-        collectionView.ItemsSource = null;
+        OrderCollectionView.ItemsSource = null;
         _orderCollectionViewItemRepository.OrderCollection.Clear();
 
         _itemCountOnPage = 0;
@@ -106,7 +108,7 @@ public partial class CustomerPage : ContentPage
             _itemCountOnPage++;
         }
 
-        collectionView.ItemsSource = _orderCollectionViewItemRepository.OrderCollection;
+        OrderCollectionView.ItemsSource = _orderCollectionViewItemRepository.OrderCollection;
     }
 
     private void OnRefreshButtonClicked(object? sender, EventArgs e)

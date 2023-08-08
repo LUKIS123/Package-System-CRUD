@@ -1,17 +1,17 @@
-using Package_System_CRUD.BusinessLogic;
 using Package_System_CRUD.BusinessLogic.Models;
-using Package_System_CRUD.BusinessLogic.Services;
+using Package_System_CRUD.BusinessLogic.Services.Authentication;
+using Package_System_CRUD.BusinessLogic.Services.Database.Products;
 
 namespace Package_System_CRUD.UserPages.Shop;
 
 public partial class AddNewProductPage : ContentPage
 {
     private readonly IProductService<Product> _productService;
-    private readonly UserAuthenticationService _userAuthenticationService;
+    private readonly IUserAuthenticationService _userAuthenticationService;
 
     public AddNewProductPage(
         IProductService<Product> productService,
-        UserAuthenticationService userAuthenticationService
+        IUserAuthenticationService userAuthenticationService
     )
     {
         InitializeComponent();
@@ -35,7 +35,7 @@ public partial class AddNewProductPage : ContentPage
 
             _productService.AddToDatabase(new Product
             {
-                ManufacturerId = _userAuthenticationService.LoggedUserId,
+                ManufacturerId = _userAuthenticationService.GetLoggedUserId(),
                 Name = name,
                 Description = description,
                 Price = price,

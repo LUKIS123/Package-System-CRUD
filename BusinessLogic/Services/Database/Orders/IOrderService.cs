@@ -1,6 +1,6 @@
 ﻿using Package_System_CRUD.BusinessLogic.Models;
 
-namespace Package_System_CRUD.BusinessLogic.Services
+namespace Package_System_CRUD.BusinessLogic.Services.Database.Orders
 {
     public interface IOrderService<T>
     {

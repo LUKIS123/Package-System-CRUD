@@ -14,22 +14,5 @@ namespace Package_System_CRUD.BusinessLogic.Data
         public DbSet<Customer> Customers => Set<Customer>();
         public DbSet<Order> Orders => Set<Order>();
         public DbSet<Employee> Employees => Set<Employee>();
-
-        // protected override void OnModelCreating(ModelBuilder modelBuilder)
-        // {
-        //     modelBuilder.Entity<Customer>(entity =>
-        //     {
-        //         entity.HasKey(e => e.Id);
-        //         entity.Property(e => e.Username).HasColumnType("VARCHAR");
-        //     });
-        // }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Product>().Ignore(p => p.Overview);
-            modelBuilder.Entity<Order>().Ignore(o => o.Overview);
-
-            base.OnModelCreating(modelBuilder);
-        }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using Package_System_CRUD.BusinessLogic.Models;
-using Package_System_CRUD.BusinessLogic.Services;
+using Package_System_CRUD.BusinessLogic.Services.Database.Orders;
 
-namespace Package_System_CRUD.BusinessLogic
+namespace Package_System_CRUD.BusinessLogic.Services.ShoppingCart
 {
-    public class ShopCartService
+    public class ShopCartService : IShopCartService
     {
         private readonly IOrderService<Order> _orderService;
         private readonly Dictionary<int, Order> _orderDictionary = new();
@@ -12,10 +12,6 @@ namespace Package_System_CRUD.BusinessLogic
         {
             _orderService = orderService;
         }
-
-        public Dictionary<int, Order> Orders => _orderDictionary;
-
-        public int Count => _orderDictionary.Count;
 
         public void AddToCart(Product product, int userId, string username, int itemCount)
         {
@@ -60,6 +56,16 @@ namespace Package_System_CRUD.BusinessLogic
             }
 
             _orderDictionary.Clear();
+        }
+
+        public Dictionary<int, Order> GetOrderDictionary()
+        {
+            return _orderDictionary;
+        }
+
+        public int GetProductCount()
+        {
+            return _orderDictionary.Count;
         }
     }
 }

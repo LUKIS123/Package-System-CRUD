@@ -1,15 +1,17 @@
-using Package_System_CRUD.BusinessLogic;
 using Package_System_CRUD.BusinessLogic.Config;
+using Package_System_CRUD.BusinessLogic.Enums;
 using Package_System_CRUD.BusinessLogic.Models;
-using Package_System_CRUD.BusinessLogic.Services;
+using Package_System_CRUD.BusinessLogic.Services.Authentication;
+using Package_System_CRUD.BusinessLogic.Services.Database.Products;
+using Package_System_CRUD.BusinessLogic.Services.ShoppingCart;
 
 namespace Package_System_CRUD.UserPages.Shop;
 
 public partial class ShopPage : ContentPage
 {
-    private readonly ShopCartService _shopCartService;
+    private readonly IShopCartService _shopCartService;
     private readonly IProductService<Product> _productService;
-    private readonly UserAuthenticationService _userAuthenticationService;
+    private readonly IUserAuthenticationService _userAuthenticationService;
     private readonly ConfigurationProperties _properties;
     private int _pageNumber = 0;
     private int _itemCountOnPage = 0;
@@ -18,10 +20,10 @@ public partial class ShopPage : ContentPage
     private Button? _shoppingCartButton;
 
     public ShopPage(
-        ShopCartService shopCartService,
+        IShopCartService shopCartService,
         IProductService<Product> productService,
-        ConfigurationProperties properties,
-        UserAuthenticationService userAuthenticationService
+        IUserAuthenticationService userAuthenticationService,
+        ConfigurationProperties properties
     )
     {
         InitializeComponent();
@@ -70,17 +72,17 @@ public partial class ShopPage : ContentPage
 
     private void RenderCollectionViewItems()
     {
-        collectionView.ItemsSource = null;
+        ProductCollectionView.ItemsSource = null;
         if (_shoppingCartButton is not null) UpperControlsStackLayout.Remove(_shoppingCartButton);
         if (_addProductButton is not null) UpperControlsStackLayout.Remove(_addProductButton);
         _itemCountOnPage = 0;
 
         List<Product> productList;
-        if (_userAuthenticationService.UserType == UserType.Manufacturer)
+        if (_userAuthenticationService.GetLoggedUserType() == UserType.Manufacturer)
         {
             productList = _productService
                 .GetFilteredByManufacturerId(
-                    _userAuthenticationService.LoggedUserId,
+                    _userAuthenticationService.GetLoggedUserId(),
                     _pageNumber,
                     _properties.ShopPageItemCount
                 );
@@ -106,13 +108,13 @@ public partial class ShopPage : ContentPage
             productList = _productService
                 .GetPageList(_pageNumber, _properties.ShopPageItemCount);
 
-            if (_userAuthenticationService.UserType == UserType.Customer)
+            if (_userAuthenticationService.GetLoggedUserType() == UserType.Customer)
             {
                 Application.Current?.Dispatcher.Dispatch(() =>
                 {
                     var btn = new Button
                     {
-                        Text = "Shopping Cart " + _shopCartService.Count,
+                        Text = "Shopping Cart " + _shopCartService.GetProductCount(),
                         HorizontalOptions = LayoutOptions.Center,
                         VerticalOptions = LayoutOptions.Center,
                         WidthRequest = 150
@@ -127,14 +129,13 @@ public partial class ShopPage : ContentPage
         }
 
         _itemCountOnPage = productList.Count;
-        collectionView.ItemsSource = productList;
+        ProductCollectionView.ItemsSource = productList;
     }
 
     private void OnRefreshButtonClicked(object? sender, EventArgs e)
     {
         UpperControlsStackLayout.Remove(_addProductButton);
         UpperControlsStackLayout.Remove(_shoppingCartButton);
-
         RenderCollectionViewItems();
     }
 }

@@ -3,77 +3,33 @@ using Package_System_CRUD.BusinessLogic.Models;
 
 namespace Package_System_CRUD.BusinessLogic.Repositories
 {
-    public class ProductRepository : IModelRepository<Product>
+    public class ProductRepository : BaseModelRepository<Product>
     {
-        private readonly AppDbContext _dbContext;
-
-        public ProductRepository(AppDbContext dbContext)
+        public ProductRepository(AppDbContext appDbContext) : base(appDbContext)
         {
-            _dbContext = dbContext;
         }
 
-        public List<Product> LoadPage(int pageNumber, int numberOfElements)
+        protected override IQueryable<Product> GetTable()
         {
-            return _dbContext
-                .Products
-                .Skip(pageNumber * numberOfElements)
-                .Take(numberOfElements)
-                .ToList();
+            return DbContext.Products;
         }
 
-        public Product? FindById(int id)
+        public override void SaveEntity(Product entity)
         {
-            return _dbContext
-                .Products
-                .FirstOrDefault(x => x.Id == id);
+            DbContext.Products.Add(entity);
+            DbContext.SaveChanges();
         }
 
-        public Product? FindByName(string name)
+        public override void DeleteEntity(Product entity)
         {
-            return _dbContext
-                .Products
-                .FirstOrDefault(x => x.Name == name);
+            DbContext.Products.Remove(entity);
+            DbContext.SaveChanges();
         }
 
-        public void SaveEntity(Product entity)
+        public override void UpdateEntity(Product entity)
         {
-            _dbContext.Products.Add(entity);
-            _dbContext.SaveChanges();
-        }
-
-        public void DeleteEntity(Product entity)
-        {
-            _dbContext.Products.Remove(entity);
-            _dbContext.SaveChanges();
-        }
-
-        public void UpdateEntity(Product entity)
-        {
-            _dbContext.Products.Update(entity);
-            _dbContext.SaveChanges();
-        }
-
-        public int GetCount()
-        {
-            return _dbContext.Products.Count();
-        }
-
-        public List<Product> GetFiltered(Func<Product, bool> condition)
-        {
-            return _dbContext
-                .Products
-                .Where(condition)
-                .ToList();
-        }
-
-        public List<Product> GetFiltered(Func<Product, bool> condition, int pageNumber, int numberOfElements)
-        {
-            return _dbContext
-                .Products
-                .Where(condition)
-                .Skip(pageNumber * numberOfElements)
-                .Take(numberOfElements)
-                .ToList();
+            DbContext.Products.Update(entity);
+            DbContext.SaveChanges();
         }
     }
 }

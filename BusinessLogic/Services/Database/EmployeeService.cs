@@ -1,7 +1,7 @@
 ﻿using Package_System_CRUD.BusinessLogic.Models;
 using Package_System_CRUD.BusinessLogic.Repositories;
 
-namespace Package_System_CRUD.BusinessLogic.Services
+namespace Package_System_CRUD.BusinessLogic.Services.Database
 {
     public class EmployeeService : IModelService<Employee>
     {
@@ -19,12 +19,14 @@ namespace Package_System_CRUD.BusinessLogic.Services
 
         public Employee? FindById(int id)
         {
-            return _repository.FindById(id);
+            return _repository
+                .FindById(x => x.Id == id);
         }
 
         public Employee? FindByName(string name)
         {
-            return _repository.FindByName(name);
+            return _repository
+                .FindByName(x => x.Username == name);
         }
 
         public void AddToDatabase(Employee model)

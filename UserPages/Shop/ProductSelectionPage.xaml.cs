@@ -1,7 +1,9 @@
 using CommunityToolkit.Maui.Views;
-using Package_System_CRUD.BusinessLogic;
+using Package_System_CRUD.BusinessLogic.Enums;
 using Package_System_CRUD.BusinessLogic.Models;
-using Package_System_CRUD.BusinessLogic.Services;
+using Package_System_CRUD.BusinessLogic.Services.Authentication;
+using Package_System_CRUD.BusinessLogic.Services.Database.Products;
+using Package_System_CRUD.BusinessLogic.Services.ShoppingCart;
 using Package_System_CRUD.UserPages.PopUps;
 
 namespace Package_System_CRUD.UserPages.Shop;
@@ -10,8 +12,8 @@ namespace Package_System_CRUD.UserPages.Shop;
 public partial class ProductSelectionPage : ContentPage
 {
     private Product? _product;
-    private readonly ShopCartService _shopCartService;
-    private readonly UserAuthenticationService _userAuthenticationService;
+    private readonly IShopCartService _shopCartService;
+    private readonly IUserAuthenticationService _userAuthenticationService;
     private readonly IProductService<Product> _productService;
 
     public Product? Product
@@ -25,8 +27,8 @@ public partial class ProductSelectionPage : ContentPage
     }
 
     public ProductSelectionPage(
-        ShopCartService shopCartService,
-        UserAuthenticationService userAuthenticationService,
+        IShopCartService shopCartService,
+        IUserAuthenticationService userAuthenticationService,
         IProductService<Product> productService
     )
     {
@@ -40,13 +42,13 @@ public partial class ProductSelectionPage : ContentPage
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        if (_userAuthenticationService.UserType != UserType.Customer)
+        if (_userAuthenticationService.GetLoggedUserType() != UserType.Customer)
         {
             BuyButton.IsEnabled = false;
             BuyButton.TextColor = Colors.Grey;
         }
 
-        if (_userAuthenticationService.UserType == UserType.Manufacturer)
+        if (_userAuthenticationService.GetLoggedUserType() == UserType.Manufacturer)
         {
             Application.Current?.Dispatcher.Dispatch(() =>
             {
@@ -77,7 +79,7 @@ public partial class ProductSelectionPage : ContentPage
     {
         if (sender is Button btn) btn.IsEnabled = false;
 
-        if (_product == null || _userAuthenticationService.UserType == UserType.NotLoggedIn) return;
+        if (_product == null || _userAuthenticationService.GetLoggedUserType() == UserType.NotLoggedIn) return;
 
         var popup = new AddToCartPopUp(_product);
         var result = await this.ShowPopupAsync(popup);
@@ -86,8 +88,8 @@ public partial class ProductSelectionPage : ContentPage
         var quantity = popup.ProductQuantity;
         _shopCartService.AddToCart(
             _product,
-            _userAuthenticationService.LoggedUserId,
-            _userAuthenticationService.LoggedUser,
+            _userAuthenticationService.GetLoggedUserId(),
+            _userAuthenticationService.GetLoggedUsername(),
             quantity
         );
 

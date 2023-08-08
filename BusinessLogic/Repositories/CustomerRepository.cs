@@ -3,85 +3,33 @@ using Package_System_CRUD.BusinessLogic.Models;
 
 namespace Package_System_CRUD.BusinessLogic.Repositories
 {
-    public class CustomerRepository : IModelRepository<Customer>
+    public class CustomerRepository : BaseModelRepository<Customer>
     {
-        private readonly AppDbContext _dbContext;
-
-        public CustomerRepository(AppDbContext appDbContext)
+        public CustomerRepository(AppDbContext appDbContext) : base(appDbContext)
         {
-            _dbContext = appDbContext;
         }
 
-        public List<Customer> LoadPage(int pageNumber, int numberOfElements)
+        protected override IQueryable<Customer> GetTable()
         {
-            return _dbContext
-                .Customers
-                .Skip(pageNumber * numberOfElements)
-                .Take(numberOfElements)
-                .ToList();
+            return DbContext.Customers;
         }
 
-        public Customer? FindById(int id)
+        public override void SaveEntity(Customer entity)
         {
-            return _dbContext
-                .Customers
-                .FirstOrDefault(x => x.Id == id);
+            DbContext.Customers.Add(entity);
+            DbContext.SaveChanges();
         }
 
-        public Customer? FindByName(string name)
+        public override void DeleteEntity(Customer entity)
         {
-            return _dbContext
-                .Customers
-                .FirstOrDefault(x => x.Username == name);
+            DbContext.Customers.Remove(entity);
+            DbContext.SaveChanges();
         }
 
-        public void SaveEntity(Customer entity)
+        public override void UpdateEntity(Customer entity)
         {
-            _dbContext.Customers.Add(entity);
-            _dbContext.SaveChanges();
-        }
-
-        public void DeleteEntity(Customer entity)
-        {
-            _dbContext.Customers.Remove(entity);
-            _dbContext.SaveChanges();
-        }
-
-        public void UpdateEntity(Customer entity)
-        {
-            _dbContext.Customers.Update(entity);
-            _dbContext.SaveChanges();
-        }
-
-        public int GetCount()
-        {
-            return _dbContext.Customers.Count();
-        }
-
-        public List<Customer> GetFiltered(Func<Customer, bool> condition)
-        {
-            return _dbContext
-                .Customers
-                .Where(condition)
-                .ToList();
-        }
-
-        public List<Customer> GetFiltered(Func<Customer, int, bool> condition)
-        {
-            return _dbContext
-                .Customers
-                .Where(condition)
-                .ToList();
-        }
-
-        public List<Customer> GetFiltered(Func<Customer, bool> condition, int pageNumber, int numberOfElements)
-        {
-            return _dbContext
-                .Customers
-                .Where(condition)
-                .Skip(pageNumber * numberOfElements)
-                .Take(numberOfElements)
-                .ToList();
+            DbContext.Customers.Update(entity);
+            DbContext.SaveChanges();
         }
 
         // public List<Customer> GetFiltered(Func<Customer, string, bool> condition)
@@ -94,7 +42,6 @@ namespace Package_System_CRUD.BusinessLogic.Repositories
         //         .ToList();
         // }
 
-        //
         // public List<Customer> GetFilteredById(int foreignId)
         // {
         //     var customer = this.FindById(foreignId);

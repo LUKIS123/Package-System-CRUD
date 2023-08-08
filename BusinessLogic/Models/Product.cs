@@ -7,11 +7,9 @@ namespace Package_System_CRUD.BusinessLogic.Models
     {
         [Key] public int Id { get; set; }
 
-        [Required]
-        [ForeignKey("Manufacturer")]
-        public int ManufacturerId { get; set; }
+        [ForeignKey("Manufacturer")] public required int ManufacturerId { get; set; }
 
-        public string Name { get; set; }
+        public required string Name { get; set; }
 
         public decimal Price { get; set; }
 

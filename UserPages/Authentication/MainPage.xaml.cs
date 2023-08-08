@@ -1,17 +1,16 @@
 ﻿using CommunityToolkit.Maui.Views;
-using Package_System_CRUD.BusinessLogic;
-using Package_System_CRUD.UserPages;
+using Package_System_CRUD.BusinessLogic.Services.Authentication;
 using Package_System_CRUD.UserPages.PopUps;
 
-namespace Package_System_CRUD;
+namespace Package_System_CRUD.UserPages.Authentication;
 
 [QueryProperty(nameof(Username), "Username")]
 public partial class MainPage : ContentPage
 {
-    private readonly UserAuthenticationService _userAuthenticationService;
+    private readonly IUserAuthenticationService _userAuthenticationService;
     public string Username { get; set; } = string.Empty;
 
-    public MainPage(UserAuthenticationService userAuthenticationService)
+    public MainPage(IUserAuthenticationService userAuthenticationService)
     {
         InitializeComponent();
         _userAuthenticationService = userAuthenticationService;

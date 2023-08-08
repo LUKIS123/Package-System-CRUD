@@ -7,19 +7,17 @@ namespace Package_System_CRUD.BusinessLogic.Models
     {
         [Key] public int Id { get; set; }
 
-        [Required] [ForeignKey("Customer")] public int CustomerId { get; set; }
+        [ForeignKey("Customer")] public required int CustomerId { get; set; }
 
-        [Required]
-        [ForeignKey("Manufacturer")]
-        public int ManufacturerId { get; set; }
+        [ForeignKey("Manufacturer")] public required int ManufacturerId { get; set; }
 
-        [Required] [ForeignKey("Product")] public int ProductId { get; set; }
+        [ForeignKey("Product")] public required int ProductId { get; set; }
 
         public int Quantity { get; set; }
 
         public string? CustomerName { get; set; }
 
-        [Required] [ForeignKey("OrderStatus")] public OrderStatus Status { get; set; }
+        [ForeignKey("OrderStatus")] public required OrderStatus Status { get; set; }
 
         public DateTime? SubmittedToEmployee { get; set; }
 

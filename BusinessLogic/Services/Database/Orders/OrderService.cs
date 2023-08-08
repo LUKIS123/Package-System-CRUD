@@ -1,7 +1,7 @@
 ﻿using Package_System_CRUD.BusinessLogic.Models;
 using Package_System_CRUD.BusinessLogic.Repositories;
 
-namespace Package_System_CRUD.BusinessLogic.Services
+namespace Package_System_CRUD.BusinessLogic.Services.Database.Orders
 {
     public class OrderService : IOrderService<Order>
     {
@@ -14,17 +14,20 @@ namespace Package_System_CRUD.BusinessLogic.Services
 
         public List<Order> GetPageList(int pageNumber, int numberOfElements)
         {
-            return _orderRepository.LoadPage(pageNumber, numberOfElements);
+            return _orderRepository
+                .LoadPage(pageNumber, numberOfElements);
         }
 
         public Order? FindById(int id)
         {
-            return _orderRepository.FindById(id);
+            return _orderRepository
+                .FindById(x => x.Id == id);
         }
 
         public Order? FindByName(string name)
         {
-            return _orderRepository.FindByName(name);
+            return _orderRepository
+                .FindByName(x => x.CustomerName == name);
         }
 
         public void AddToDatabase(Order model)

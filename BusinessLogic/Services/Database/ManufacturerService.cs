@@ -1,7 +1,7 @@
 ﻿using Package_System_CRUD.BusinessLogic.Repositories;
 using Package_System_CRUD.BusinessLogic.Models;
 
-namespace Package_System_CRUD.BusinessLogic.Services
+namespace Package_System_CRUD.BusinessLogic.Services.Database
 {
     public class ManufacturerService : IModelService<Manufacturer>
     {
@@ -19,12 +19,14 @@ namespace Package_System_CRUD.BusinessLogic.Services
 
         public Manufacturer? FindById(int id)
         {
-            return _repository.FindById(id);
+            return _repository
+                .FindById(x => x.Id == id);
         }
 
         public Manufacturer? FindByName(string name)
         {
-            return _repository.FindByName(name);
+            return _repository
+                .FindByName(x => x.Name == name);
         }
 
         public void AddToDatabase(Manufacturer model)

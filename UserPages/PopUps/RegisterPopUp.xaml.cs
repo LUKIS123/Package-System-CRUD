@@ -1,5 +1,5 @@
 using CommunityToolkit.Maui.Views;
-using Package_System_CRUD.BusinessLogic;
+using Package_System_CRUD.BusinessLogic.Enums;
 
 namespace Package_System_CRUD.UserPages.PopUps;
 

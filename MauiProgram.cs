@@ -2,13 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Package_System_CRUD.BusinessLogic;
 using Package_System_CRUD.BusinessLogic.Config;
 using Package_System_CRUD.BusinessLogic.Data;
 using Package_System_CRUD.BusinessLogic.Models;
 using Package_System_CRUD.BusinessLogic.Repositories;
-using Package_System_CRUD.BusinessLogic.Services;
+using Package_System_CRUD.BusinessLogic.Services.Authentication;
+using Package_System_CRUD.BusinessLogic.Services.Database;
+using Package_System_CRUD.BusinessLogic.Services.Database.Orders;
+using Package_System_CRUD.BusinessLogic.Services.Database.Products;
+using Package_System_CRUD.BusinessLogic.Services.ShoppingCart;
 using Package_System_CRUD.UserPages;
+using Package_System_CRUD.UserPages.Authentication;
 using Package_System_CRUD.UserPages.Management;
 using Package_System_CRUD.UserPages.Shop;
 
@@ -47,8 +51,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<IModelRepository<Product>, ProductRepository>();
         builder.Services.AddSingleton<IModelRepository<Order>, OrderRepository>();
 
-        builder.Services.AddSingleton<UserAuthenticationService>();
-        builder.Services.AddSingleton<ShopCartService>();
+        builder.Services.AddSingleton<IUserAuthenticationService, UserAuthenticationService>();
+        builder.Services.AddSingleton<IShopCartService, ShopCartService>();
 
         builder.Services.AddSingleton<IModelService<Customer>, CustomerService>();
         builder.Services.AddSingleton<IModelService<Manufacturer>, ManufacturerService>();

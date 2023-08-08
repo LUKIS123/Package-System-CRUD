@@ -3,77 +3,33 @@ using Package_System_CRUD.BusinessLogic.Models;
 
 namespace Package_System_CRUD.BusinessLogic.Repositories
 {
-    public class ManufacturerRepository : IModelRepository<Manufacturer>
+    public class ManufacturerRepository : BaseModelRepository<Manufacturer>
     {
-        private readonly AppDbContext _dbContext;
-
-        public ManufacturerRepository(AppDbContext appDbContext)
+        public ManufacturerRepository(AppDbContext appDbContext) : base(appDbContext)
         {
-            _dbContext = appDbContext;
         }
 
-        public List<Manufacturer> LoadPage(int pageNumber, int numberOfElements)
+        protected override IQueryable<Manufacturer> GetTable()
         {
-            return _dbContext
-                .Manufacturers
-                .Skip(pageNumber * numberOfElements)
-                .Take(numberOfElements)
-                .ToList();
+            return DbContext.Manufacturers;
         }
 
-        public Manufacturer? FindById(int id)
+        public override void SaveEntity(Manufacturer entity)
         {
-            return _dbContext
-                .Manufacturers
-                .FirstOrDefault(x => x.Id == id);
+            DbContext.Manufacturers.Add(entity);
+            DbContext.SaveChanges();
         }
 
-        public Manufacturer? FindByName(string name)
+        public override void DeleteEntity(Manufacturer entity)
         {
-            return _dbContext
-                .Manufacturers
-                .FirstOrDefault(x => x.Name == name);
+            DbContext.Manufacturers.Remove(entity);
+            DbContext.SaveChanges();
         }
 
-        public void SaveEntity(Manufacturer entity)
+        public override void UpdateEntity(Manufacturer entity)
         {
-            _dbContext.Manufacturers.Add(entity);
-            _dbContext.SaveChanges();
-        }
-
-        public void DeleteEntity(Manufacturer entity)
-        {
-            _dbContext.Manufacturers.Remove(entity);
-            _dbContext.SaveChanges();
-        }
-
-        public void UpdateEntity(Manufacturer entity)
-        {
-            _dbContext.Manufacturers.Update(entity);
-            _dbContext.SaveChanges();
-        }
-
-        public int GetCount()
-        {
-            return _dbContext.Manufacturers.Count();
-        }
-
-        public List<Manufacturer> GetFiltered(Func<Manufacturer, bool> condition)
-        {
-            return _dbContext
-                .Manufacturers
-                .Where(condition)
-                .ToList();
-        }
-
-        public List<Manufacturer> GetFiltered(Func<Manufacturer, bool> condition, int pageNumber, int numberOfElements)
-        {
-            return _dbContext
-                .Manufacturers
-                .Where(condition)
-                .Skip(pageNumber * numberOfElements)
-                .Take(numberOfElements)
-                .ToList();
+            DbContext.Manufacturers.Update(entity);
+            DbContext.SaveChanges();
         }
     }
 }

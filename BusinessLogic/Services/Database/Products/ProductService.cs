@@ -1,7 +1,7 @@
 ﻿using Package_System_CRUD.BusinessLogic.Models;
 using Package_System_CRUD.BusinessLogic.Repositories;
 
-namespace Package_System_CRUD.BusinessLogic.Services
+namespace Package_System_CRUD.BusinessLogic.Services.Database.Products
 {
     public class ProductService : IProductService<Product>
     {
@@ -14,17 +14,20 @@ namespace Package_System_CRUD.BusinessLogic.Services
 
         public List<Product> GetPageList(int pageNumber, int numberOfElements)
         {
-            return _repository.LoadPage(pageNumber, numberOfElements);
+            return _repository
+                .LoadPage(pageNumber, numberOfElements);
         }
 
         public Product? FindById(int id)
         {
-            return _repository.FindById(id);
+            return _repository
+                .FindById(x => x.Id == id);
         }
 
         public Product? FindByName(string name)
         {
-            return _repository.FindByName(name);
+            return _repository
+                .FindByName(x => x.Name == name);
         }
 
         public void AddToDatabase(Product model)
