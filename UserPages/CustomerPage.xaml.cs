@@ -1,5 +1,6 @@
 using CommunityToolkit.Maui.Views;
 using Package_System_CRUD.BusinessLogic.Config;
+using Package_System_CRUD.BusinessLogic.DateTimeProvider;
 using Package_System_CRUD.BusinessLogic.Interface;
 using Package_System_CRUD.BusinessLogic.Models;
 using Package_System_CRUD.BusinessLogic.Services.Authentication;
@@ -16,6 +17,7 @@ public partial class CustomerPage : ContentPage
     private readonly IProductService<Product> _productService;
     private readonly IModelService<Manufacturer> _manufacturerService;
     private readonly IUserAuthenticationService _userAuthenticationService;
+    private readonly IDateTimeProvider _dateTimeProvider;
     private readonly ConfigurationProperties _properties;
     private readonly OrderCollectionViewItemRepository _orderCollectionViewItemRepository;
     public string Username { get; private set; } = string.Empty;
@@ -28,6 +30,7 @@ public partial class CustomerPage : ContentPage
         IProductService<Product> productService,
         IModelService<Manufacturer> manufacturerService,
         IUserAuthenticationService userAuthenticationService,
+        IDateTimeProvider dateTimeProvider,
         ConfigurationProperties properties
     )
     {
@@ -37,6 +40,7 @@ public partial class CustomerPage : ContentPage
         _properties = properties;
         _manufacturerService = manufacturerService;
         _userAuthenticationService = userAuthenticationService;
+        _dateTimeProvider = dateTimeProvider;
         _orderCollectionViewItemRepository = new OrderCollectionViewItemRepository();
     }
 
@@ -81,7 +85,7 @@ public partial class CustomerPage : ContentPage
         if (order is null) return;
 
         order.Status = OrderStatus.PickedUp;
-        order.SubmittedToEmployee = DateTime.Now;
+        order.SubmittedToEmployee = _dateTimeProvider.GetDateTime();
         _orderService.UpdateEntity(order);
     }
 

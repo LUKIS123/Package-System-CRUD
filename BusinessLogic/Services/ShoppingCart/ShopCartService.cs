@@ -1,4 +1,5 @@
-﻿using Package_System_CRUD.BusinessLogic.Models;
+﻿using Package_System_CRUD.BusinessLogic.DateTimeProvider;
+using Package_System_CRUD.BusinessLogic.Models;
 using Package_System_CRUD.BusinessLogic.Services.Database.Orders;
 
 namespace Package_System_CRUD.BusinessLogic.Services.ShoppingCart
@@ -6,11 +7,16 @@ namespace Package_System_CRUD.BusinessLogic.Services.ShoppingCart
     public class ShopCartService : IShopCartService
     {
         private readonly IOrderService<Order> _orderService;
+        private readonly IDateTimeProvider _dateTimeProvider;
         private readonly Dictionary<int, Order> _orderDictionary = new();
 
-        public ShopCartService(IOrderService<Order> orderService)
+        public ShopCartService(
+            IOrderService<Order> orderService,
+            IDateTimeProvider dateTimeProvider
+        )
         {
             _orderService = orderService;
+            _dateTimeProvider = dateTimeProvider;
         }
 
         public void AddToCart(Product product, int userId, string username, int itemCount)
@@ -51,7 +57,7 @@ namespace Package_System_CRUD.BusinessLogic.Services.ShoppingCart
             foreach (var keyValuePair in _orderDictionary)
             {
                 keyValuePair.Value.Status = OrderStatus.Pending;
-                keyValuePair.Value.SubmittedToEmployee = DateTime.Now;
+                keyValuePair.Value.SubmittedToEmployee = _dateTimeProvider.GetDateTime();
                 _orderService.AddToDatabase(keyValuePair.Value);
             }
 
