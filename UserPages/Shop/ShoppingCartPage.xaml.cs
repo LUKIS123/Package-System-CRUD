@@ -1,17 +1,20 @@
-using Package_System_CRUD.BusinessLogic;
 using Package_System_CRUD.BusinessLogic.Config;
 using Package_System_CRUD.BusinessLogic.Models;
+using Package_System_CRUD.BusinessLogic.Services.ShoppingCart;
 
 namespace Package_System_CRUD.UserPages.Shop;
 
 public partial class ShoppingCartPage : ContentPage
 {
-    private readonly ShopCartService _shopCartService;
+    private readonly IShopCartService _shopCartService;
     private readonly ConfigurationProperties _properties;
     private int _pageNumber = 0;
     private int _itemCountOnPage = 0;
 
-    public ShoppingCartPage(ShopCartService shopCartService, ConfigurationProperties properties)
+    public ShoppingCartPage(
+        IShopCartService shopCartService,
+        ConfigurationProperties properties
+    )
     {
         InitializeComponent();
         _shopCartService = shopCartService;
@@ -27,8 +30,8 @@ public partial class ShoppingCartPage : ContentPage
     private void RenderCollectionViewItems()
     {
         collectionView.ItemsSource = null;
-        collectionView.ItemsSource = _shopCartService.Orders.Values.ToList();
-        _itemCountOnPage = _shopCartService.Count;
+        collectionView.ItemsSource = _shopCartService.GetOrderDictionary().Values.ToList();
+        _itemCountOnPage = _shopCartService.GetProductCount();
     }
 
     private void OnPreviousBtnClicked(object? sender, EventArgs e)

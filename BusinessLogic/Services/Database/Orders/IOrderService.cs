@@ -1,6 +1,6 @@
 ﻿using Package_System_CRUD.BusinessLogic.Models;
 
-namespace Package_System_CRUD.BusinessLogic.Services
+namespace Package_System_CRUD.BusinessLogic.Services.Database.Orders
 {
     public interface IOrderService<T>
     {
@@ -10,7 +10,6 @@ namespace Package_System_CRUD.BusinessLogic.Services
         public void AddToDatabase(T model);
         public void RemoveFromDatabase(T model);
         public void UpdateEntity(T entity);
-        public int GetCount();
         public List<T> GetFilteredByUserId(int id);
         public List<T> GetFilteredByManufacturerId(int id);
         public List<T> GetFilteredByStatus(OrderStatus orderStatus);

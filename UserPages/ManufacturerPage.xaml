@@ -57,7 +57,7 @@
             HorizontalOptions="Center">
         </Label>
 
-        <CollectionView x:Name="collectionView"
+        <CollectionView x:Name="OrderCollectionView"
                         SelectionMode="Single"
                         SelectionChanged="OnSelectionChanged"
                         Margin="25"

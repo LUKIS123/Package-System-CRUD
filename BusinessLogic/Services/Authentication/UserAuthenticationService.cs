@@ -1,28 +1,25 @@
-﻿using Package_System_CRUD.BusinessLogic.Data;
+﻿using Package_System_CRUD.BusinessLogic.Enums;
 using Package_System_CRUD.BusinessLogic.Models;
-using Package_System_CRUD.BusinessLogic.Services;
+using Package_System_CRUD.BusinessLogic.Services.Database;
 
-namespace Package_System_CRUD.BusinessLogic
+namespace Package_System_CRUD.BusinessLogic.Services.Authentication
 {
-    public class UserAuthenticationService
+    public class UserAuthenticationService : IUserAuthenticationService
     {
         private readonly IModelService<Customer> _customerService;
         private readonly IModelService<Manufacturer> _manufacturerService;
         private readonly IModelService<Employee> _employeeService;
 
-        public string LoggedUser { get; private set; } = string.Empty;
-        public int LoggedUserId { get; private set; }
-        public UserType UserType { get; private set; } = UserType.NotLoggedIn;
+        private string _loggedUser = string.Empty;
+        private int _loggedUserId;
+        private UserType _userType = UserType.NotLoggedIn;
 
         public UserAuthenticationService(
-            AppDbContext dbContext,
             IModelService<Customer> customerService,
             IModelService<Manufacturer> manufacturerService,
             IModelService<Employee> employeeService
         )
         {
-            dbContext.Database.EnsureCreated();
-
             _customerService = customerService;
             _manufacturerService = manufacturerService;
             _employeeService = employeeService;
@@ -54,9 +51,9 @@ namespace Package_System_CRUD.BusinessLogic
 
         private void StashUserData(string username, int id, UserType userType)
         {
-            LoggedUser = username;
-            LoggedUserId = id;
-            UserType = userType;
+            _loggedUser = username;
+            _loggedUserId = id;
+            _userType = userType;
         }
 
         public bool RegisterNewUser(string username, UserType userType)
@@ -91,6 +88,21 @@ namespace Package_System_CRUD.BusinessLogic
                 default:
                     return false;
             }
+        }
+
+        public string GetLoggedUsername()
+        {
+            return _loggedUser;
+        }
+
+        public int GetLoggedUserId()
+        {
+            return _loggedUserId;
+        }
+
+        public UserType GetLoggedUserType()
+        {
+            return _userType;
         }
     }
 }

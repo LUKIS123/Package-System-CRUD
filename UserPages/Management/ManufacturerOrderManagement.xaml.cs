@@ -1,6 +1,7 @@
+using Package_System_CRUD.BusinessLogic.DateTimeProvider;
 using Package_System_CRUD.BusinessLogic.Interface;
 using Package_System_CRUD.BusinessLogic.Models;
-using Package_System_CRUD.BusinessLogic.Services;
+using Package_System_CRUD.BusinessLogic.Services.Database.Orders;
 
 namespace Package_System_CRUD.UserPages.Management;
 
@@ -9,6 +10,7 @@ public partial class ManufacturerOrderManagement : ContentPage
 {
     private OrderCollectionViewItem? _orderCollectionViewModel;
     private readonly IOrderService<Order> _orderService;
+    private readonly IDateTimeProvider _dateTimeProvider;
 
     public OrderCollectionViewItem? OrderCollectionViewModel
     {
@@ -20,11 +22,12 @@ public partial class ManufacturerOrderManagement : ContentPage
         }
     }
 
-    public ManufacturerOrderManagement(IOrderService<Order> orderService)
+    public ManufacturerOrderManagement(IOrderService<Order> orderService, IDateTimeProvider dateTimeProvider)
     {
         InitializeComponent();
         BindingContext = this;
         _orderService = orderService;
+        _dateTimeProvider = dateTimeProvider;
     }
 
     protected override void OnAppearing()
@@ -78,7 +81,7 @@ public partial class ManufacturerOrderManagement : ContentPage
         if (OrderCollectionViewModel.Status == OrderStatus.InRealization)
         {
             order.Status = OrderStatus.Sent;
-            order.OrderRealized = DateTime.Now;
+            order.OrderRealized = _dateTimeProvider.GetDateTime();
             _orderService.UpdateEntity(order);
 
             StatusChangedBtn.Text = "No actions possible";

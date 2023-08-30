@@ -1,6 +1,7 @@
+using Package_System_CRUD.BusinessLogic.DateTimeProvider;
 using Package_System_CRUD.BusinessLogic.Interface;
 using Package_System_CRUD.BusinessLogic.Models;
-using Package_System_CRUD.BusinessLogic.Services;
+using Package_System_CRUD.BusinessLogic.Services.Database.Orders;
 
 namespace Package_System_CRUD.UserPages.Management;
 
@@ -9,6 +10,7 @@ public partial class EmployeeOrderManagement : ContentPage
 {
     private OrderCollectionViewItem? _orderCollectionViewModel;
     private readonly IOrderService<Order> _orderService;
+    private readonly IDateTimeProvider _dateTimeProvider;
 
     public OrderCollectionViewItem? OrderCollectionViewModel
     {
@@ -20,11 +22,12 @@ public partial class EmployeeOrderManagement : ContentPage
         }
     }
 
-    public EmployeeOrderManagement(IOrderService<Order> orderService)
+    public EmployeeOrderManagement(IOrderService<Order> orderService, IDateTimeProvider dateTimeProvider)
     {
         InitializeComponent();
         BindingContext = this;
         _orderService = orderService;
+        _dateTimeProvider = dateTimeProvider;
     }
 
     protected override void OnAppearing()
@@ -52,7 +55,7 @@ public partial class EmployeeOrderManagement : ContentPage
         if (order == null) return;
 
         order.Status = OrderStatus.Received;
-        order.SubmittedToManufacturer = DateTime.Now;
+        order.SubmittedToManufacturer = _dateTimeProvider.GetDateTime();
         _orderService.UpdateEntity(order);
         await Shell.Current.GoToAsync("..");
     }
@@ -65,7 +68,7 @@ public partial class EmployeeOrderManagement : ContentPage
         if (order == null) return;
 
         order.Status = OrderStatus.ReadyToPickUp;
-        order.SentToCustomer = DateTime.Now;
+        order.SentToCustomer = _dateTimeProvider.GetDateTime();
         _orderService.UpdateEntity(order);
         await Shell.Current.GoToAsync("..");
     }

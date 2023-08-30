@@ -1,21 +1,23 @@
-﻿using Package_System_CRUD.BusinessLogic.Models;
-using Package_System_CRUD.BusinessLogic.Services;
+﻿using Package_System_CRUD.BusinessLogic.DateTimeProvider;
+using Package_System_CRUD.BusinessLogic.Models;
+using Package_System_CRUD.BusinessLogic.Services.Database.Orders;
 
-namespace Package_System_CRUD.BusinessLogic
+namespace Package_System_CRUD.BusinessLogic.Services.ShoppingCart
 {
-    public class ShopCartService
+    public class ShopCartService : IShopCartService
     {
         private readonly IOrderService<Order> _orderService;
+        private readonly IDateTimeProvider _dateTimeProvider;
         private readonly Dictionary<int, Order> _orderDictionary = new();
 
-        public ShopCartService(IOrderService<Order> orderService)
+        public ShopCartService(
+            IOrderService<Order> orderService,
+            IDateTimeProvider dateTimeProvider
+        )
         {
             _orderService = orderService;
+            _dateTimeProvider = dateTimeProvider;
         }
-
-        public Dictionary<int, Order> Orders => _orderDictionary;
-
-        public int Count => _orderDictionary.Count;
 
         public void AddToCart(Product product, int userId, string username, int itemCount)
         {
@@ -55,11 +57,21 @@ namespace Package_System_CRUD.BusinessLogic
             foreach (var keyValuePair in _orderDictionary)
             {
                 keyValuePair.Value.Status = OrderStatus.Pending;
-                keyValuePair.Value.SubmittedToEmployee = DateTime.Now;
+                keyValuePair.Value.SubmittedToEmployee = _dateTimeProvider.GetDateTime();
                 _orderService.AddToDatabase(keyValuePair.Value);
             }
 
             _orderDictionary.Clear();
+        }
+
+        public Dictionary<int, Order> GetOrderDictionary()
+        {
+            return _orderDictionary;
+        }
+
+        public int GetProductCount()
+        {
+            return _orderDictionary.Count;
         }
     }
 }
