@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               x:Class="Package_System_CRUD.UserPages.PopUps.PickUpOrderPopUp">
+
+    <VerticalStackLayout
+        Spacing="5"
+        Padding="20,0"
+        VerticalOptions="Start"
+        HorizontalOptions="Center"
+        Margin="10">
+
+        <Label
+            x:Name="OverviewLbl"
+            TextColor="Black"
+            FontSize="Micro"
+            HorizontalOptions="Start"
+            VerticalOptions="Center">
+        </Label>
+
+        <Label
+            x:Name="InfoLbl"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            FontSize="12"
+            TextColor="DarkViolet">
+        </Label>
+
+        <HorizontalStackLayout
+            VerticalOptions="Center" HorizontalOptions="Center" Spacing="25">
+            <Button Text="Pick Up Order" Clicked="OnPickUpButtonClicked" Margin="20,5" WidthRequest="150" />
+            <Button Text="Close" Clicked="OnCloseButtonClicked" Margin="20,5" WidthRequest="150" />
+        </HorizontalStackLayout>
+
+    </VerticalStackLayout>
+
+</toolkit:Popup>
