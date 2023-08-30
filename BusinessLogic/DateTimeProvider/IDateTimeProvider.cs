@@ -2,7 +2,6 @@
 {
     public interface IDateTimeProvider
     {
-        public DateTime RefreshCurrentDateTime();
         public DateTime GetDateTime();
     }
 }

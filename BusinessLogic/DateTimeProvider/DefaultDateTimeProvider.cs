@@ -2,11 +2,6 @@
 {
     public class DefaultDateTimeProvider : IDateTimeProvider
     {
-        public DateTime RefreshCurrentDateTime()
-        {
-            return DateTime.Today;
-        }
-
         public DateTime GetDateTime()
         {
             return DateTime.Today;

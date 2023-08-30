@@ -7,6 +7,7 @@ namespace Package_System_CRUD.BusinessLogic.Data
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
+            Database.EnsureCreated();
         }
 
         public DbSet<Manufacturer> Manufacturers => Set<Manufacturer>();

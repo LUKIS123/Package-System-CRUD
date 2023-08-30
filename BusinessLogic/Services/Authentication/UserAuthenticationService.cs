@@ -1,5 +1,4 @@
-﻿using Package_System_CRUD.BusinessLogic.Data;
-using Package_System_CRUD.BusinessLogic.Enums;
+﻿using Package_System_CRUD.BusinessLogic.Enums;
 using Package_System_CRUD.BusinessLogic.Models;
 using Package_System_CRUD.BusinessLogic.Services.Database;
 
@@ -16,14 +15,11 @@ namespace Package_System_CRUD.BusinessLogic.Services.Authentication
         private UserType _userType = UserType.NotLoggedIn;
 
         public UserAuthenticationService(
-            AppDbContext dbContext,
             IModelService<Customer> customerService,
             IModelService<Manufacturer> manufacturerService,
             IModelService<Employee> employeeService
         )
         {
-            dbContext.Database.EnsureCreated();
-
             _customerService = customerService;
             _manufacturerService = manufacturerService;
             _employeeService = employeeService;
