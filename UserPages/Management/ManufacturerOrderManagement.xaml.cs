@@ -5,7 +5,7 @@ using Package_System_CRUD.BusinessLogic.Services.Database.Orders;
 
 namespace Package_System_CRUD.UserPages.Management;
 
-[QueryProperty(nameof(OrderCollectionViewModel), "OrderCollectionViewModel")]
+[QueryProperty(nameof(OrderCollectionViewModel), "OrderCollectionViewItem")]
 public partial class ManufacturerOrderManagement : ContentPage
 {
     private OrderCollectionViewItem? _orderCollectionViewModel;

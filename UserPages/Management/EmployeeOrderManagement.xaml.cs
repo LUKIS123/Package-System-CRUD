@@ -5,19 +5,19 @@ using Package_System_CRUD.BusinessLogic.Services.Database.Orders;
 
 namespace Package_System_CRUD.UserPages.Management;
 
-[QueryProperty(nameof(OrderCollectionViewModel), "OrderCollectionViewModel")]
+[QueryProperty(nameof(BusinessLogic.Interface.OrderCollectionViewItem), "OrderCollectionViewItem")]
 public partial class EmployeeOrderManagement : ContentPage
 {
-    private OrderCollectionViewItem? _orderCollectionViewModel;
+    private OrderCollectionViewItem? _orderCollectionViewItem;
     private readonly IOrderService<Order> _orderService;
     private readonly IDateTimeProvider _dateTimeProvider;
 
-    public OrderCollectionViewItem? OrderCollectionViewModel
+    public OrderCollectionViewItem? OrderCollectionViewItem
     {
-        get => _orderCollectionViewModel;
+        get => _orderCollectionViewItem;
         set
         {
-            _orderCollectionViewModel = value;
+            _orderCollectionViewItem = value;
             OnPropertyChanged();
         }
     }
@@ -33,7 +33,7 @@ public partial class EmployeeOrderManagement : ContentPage
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        var note = OrderCollectionViewModel?.Status switch
+        var note = OrderCollectionViewItem?.Status switch
         {
             OrderStatus.Pending => "NOTE: Order pending to be sent to Manufacturer",
             OrderStatus.Sent => "NOTE: Order ready to be sent to Customer",
@@ -49,9 +49,9 @@ public partial class EmployeeOrderManagement : ContentPage
 
     private async void OnForwardToManufacturerButtonClicked(object? sender, EventArgs e)
     {
-        if (OrderCollectionViewModel.Status != OrderStatus.Pending) return;
+        if (OrderCollectionViewItem.Status != OrderStatus.Pending) return;
 
-        var order = _orderService.FindById(OrderCollectionViewModel.Id);
+        var order = _orderService.FindById(OrderCollectionViewItem.Id);
         if (order == null) return;
 
         order.Status = OrderStatus.Received;
@@ -62,9 +62,9 @@ public partial class EmployeeOrderManagement : ContentPage
 
     private async void OnSendToCustomerButtonClicked(object? sender, EventArgs e)
     {
-        if (OrderCollectionViewModel.Status != OrderStatus.Sent) return;
+        if (OrderCollectionViewItem.Status != OrderStatus.Sent) return;
 
-        var order = _orderService.FindById(OrderCollectionViewModel.Id);
+        var order = _orderService.FindById(OrderCollectionViewItem.Id);
         if (order == null) return;
 
         order.Status = OrderStatus.ReadyToPickUp;

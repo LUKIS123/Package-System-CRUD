@@ -4,38 +4,42 @@ using Package_System_CRUD.BusinessLogic.Models;
 
 namespace Package_System_CRUD.UserPages.PopUps;
 
-[QueryProperty(nameof(OrderCollectionViewModel), "OrderCollectionViewModel")]
+[QueryProperty(nameof(BusinessLogic.Interface.OrderCollectionViewItem), "OrderCollectionViewItem")]
 public partial class PickUpOrderPopUp : Popup
 {
-    private OrderCollectionViewItem? _orderCollectionViewModel;
+    private OrderCollectionViewItem? _orderCollectionViewItem;
     private bool _isPickedUp = false;
 
-    public OrderCollectionViewItem? OrderCollectionViewModel
+    public OrderCollectionViewItem? OrderCollectionViewItem
     {
-        get => _orderCollectionViewModel;
+        get => _orderCollectionViewItem;
         set
         {
-            _orderCollectionViewModel = value;
+            _orderCollectionViewItem = value;
             OnPropertyChanged();
         }
     }
 
-    public PickUpOrderPopUp(OrderCollectionViewItem? orderCollectionViewModel)
+    public PickUpOrderPopUp(OrderCollectionViewItem? orderCollectionViewItem)
     {
         InitializeComponent();
-        OrderCollectionViewModel = orderCollectionViewModel;
+        OrderCollectionViewItem = orderCollectionViewItem;
 
-        OverviewLbl.Text = OrderCollectionViewModel?.Details;
-        InfoLbl.Text = OrderCollectionViewModel?.Status == OrderStatus.ReadyToPickUp
-            ? "Order is ready to Pick Up!"
-            : "Order is yet to be realized!";
+        OverviewLbl.Text = OrderCollectionViewItem?.Details;
+        var status = OrderCollectionViewItem?.Status;
+        InfoLbl.Text = status switch
+        {
+            (OrderStatus.ReadyToPickUp) => "Order is ready to Pick Up!",
+            (OrderStatus.PickedUp) => "Already picked up this order!",
+            _ => "Order is yet to be realized!"
+        };
     }
 
     private void OnPickUpButtonClicked(object? sender, EventArgs e)
     {
-        if (OrderCollectionViewModel?.Status == OrderStatus.ReadyToPickUp)
+        if (OrderCollectionViewItem?.Status == OrderStatus.ReadyToPickUp)
         {
-            OrderCollectionViewModel.Status = OrderStatus.PickedUp;
+            OrderCollectionViewItem.Status = OrderStatus.PickedUp;
             _isPickedUp = true;
             InfoLbl.Text = "Order successfully Picked Up!";
             InfoLbl.TextColor = Colors.LightGreen;

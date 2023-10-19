@@ -8,12 +8,12 @@
     <Grid RowDefinitions="*,Auto" ColumnDefinitions="*,*,*" ColumnSpacing="5" Margin="20,5">
 
         <TableView Intent="Data" Grid.Row="0" Grid.ColumnSpan="3" HorizontalOptions="Center">
-            <TableRoot Title="Order overview:">
+            <TableRoot Title="{Binding Path=OrderCollectionViewItem.ProductName}">
                 <TableSection>
-                    <TextCell Text="{Binding Path=OrderCollectionViewModel.DetailsOnEmployeePage}" />
+                    <TextCell Text="{Binding Path=OrderCollectionViewItem.DetailsOnEmployeePage}" />
                 </TableSection>
                 <TableSection Title="Order status:">
-                    <TextCell Text="{Binding Path=OrderCollectionViewModel.Status}" />
+                    <TextCell Text="{Binding Path=OrderCollectionViewItem.Status}" />
                 </TableSection>
                 <TableSection>
                     <TextCell x:Name="InfoTextCell" TextColor="DarkViolet" />

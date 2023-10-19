@@ -87,6 +87,7 @@ public partial class CustomerPage : ContentPage
         order.Status = OrderStatus.PickedUp;
         order.SubmittedToEmployee = _dateTimeProvider.GetDateTime();
         _orderService.UpdateEntity(order);
+        RenderCollectionViewItems();
     }
 
     private void RenderCollectionViewItems()
